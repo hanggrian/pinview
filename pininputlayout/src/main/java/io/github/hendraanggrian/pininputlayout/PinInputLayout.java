@@ -110,6 +110,11 @@ public class PinInputLayout extends LinearLayout implements TextWatcher, View.On
             focusedPin = pinInputs.indexOf((PinInput) v);
     }
 
+    public void addTextChangedListener(TextWatcher textWatcher) {
+        for (PinInput pinInput : pinInputs)
+            pinInput.addTextChangedListener(textWatcher);
+    }
+
     public void setOnStateChangedListener(@Nullable OnStateChangedListener onStateChangedListener) {
         this.onStateChangedListener = onStateChangedListener;
     }
@@ -128,16 +133,21 @@ public class PinInputLayout extends LinearLayout implements TextWatcher, View.On
         return onPinChangedListener;
     }
 
-    public void setInputType(int type) {
-        for (PinInput pinInput : pinInputs)
-            pinInput.setInputType(type);
-    }
-
     public String getText() {
         String code = "";
         for (PinInput PinInput : pinInputs)
             code += PinInput.getText();
         return code;
+    }
+
+    public void clear() {
+        for (PinInput pinInput : pinInputs)
+            pinInput.setText("");
+    }
+
+    public void setInputType(int type) {
+        for (PinInput pinInput : pinInputs)
+            pinInput.setInputType(type);
     }
 
     private boolean arePinsFilled() {
