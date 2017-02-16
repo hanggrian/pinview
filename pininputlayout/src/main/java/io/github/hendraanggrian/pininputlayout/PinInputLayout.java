@@ -21,7 +21,6 @@ import java.util.List;
 public class PinInputLayout extends LinearLayout implements TextWatcher, View.OnFocusChangeListener {
 
     private static final int DEFAULT_PIN_DIGITS = 4;
-    private static final int IGNORE = -1;
 
     @NonNull private final List<PinInput> pinInputs;
     private int focusedPin;
@@ -47,14 +46,14 @@ public class PinInputLayout extends LinearLayout implements TextWatcher, View.On
         final TypedArray array = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PinInputLayout, defStyleAttr, defStyleRes);
         final int pinDigits = array.getInt(R.styleable.PinInputLayout_pinDigits, DEFAULT_PIN_DIGITS);
         final int pinMargin = (int) array.getDimension(R.styleable.PinInputLayout_pinMargin, context.getResources().getDimension(R.dimen.margin_pin));
-        final int pinBackground = array.getResourceId(R.styleable.PinInputLayout_pinBackground, IGNORE);
+        final int pinBackground = array.getResourceId(R.styleable.PinInputLayout_pinBackground, -1);
         @StyleRes final int pinTextAppearance;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)
             pinTextAppearance = array.getResourceId(R.styleable.PinInputLayout_pinTextAppearance, android.R.style.TextAppearance_Material_Display1);
         else
             pinTextAppearance = array.getResourceId(R.styleable.PinInputLayout_pinTextAppearance, android.R.style.TextAppearance_Large);
-        @ColorInt final int pinTextColor = array.getColor(R.styleable.PinInputLayout_pinTextColor, IGNORE);
-        final float pinTextSize = array.getDimension(R.styleable.PinInputLayout_pinTextSize, IGNORE);
+        @ColorInt final int pinTextColor = array.getColor(R.styleable.PinInputLayout_pinTextColor, -1);
+        final float pinTextSize = array.getDimension(R.styleable.PinInputLayout_pinTextSize, -1);
         array.recycle();
 
         setOrientation(HORIZONTAL);
@@ -63,11 +62,11 @@ public class PinInputLayout extends LinearLayout implements TextWatcher, View.On
             pinInputs.add(new PinInput(context, this));
             pinInputs.get(i).setMargin(i > 0 ? pinMargin : 0, 0, 0, 0);
             pinInputs.get(i).setTextAppearance(context, pinTextAppearance);
-            if (pinBackground != IGNORE)
+            if (pinBackground != -1)
                 pinInputs.get(i).setBackgroundResource(pinBackground);
-            if (pinTextColor != IGNORE)
+            if (pinTextColor != -1)
                 pinInputs.get(i).setTextColor(pinTextColor);
-            if (pinTextSize != IGNORE)
+            if (pinTextSize != -1)
                 pinInputs.get(i).setTextSize(pinTextSize);
             addView(pinInputs.get(i));
         }

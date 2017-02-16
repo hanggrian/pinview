@@ -1,7 +1,6 @@
 package io.github.hendraanggrian.pininputlayout;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -15,9 +14,9 @@ import android.widget.LinearLayout;
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class PinInput extends EditText {
+public class PinInput extends EditText {
 
-    <Listener extends TextWatcher & OnFocusChangeListener> PinInput(Context context, @NonNull Listener listener) {
+    public <Listener extends TextWatcher & OnFocusChangeListener> PinInput(Context context, @NonNull Listener listener) {
         super(context);
         addTextChangedListener(listener);
         setOnFocusChangeListener(listener);
@@ -47,10 +46,7 @@ class PinInput extends EditText {
     @Override
     @SuppressWarnings("deprecation")
     public void setTextAppearance(Context context, int resId) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            super.setTextAppearance(resId);
-        else
-            super.setTextAppearance(getContext(), resId);
+        super.setTextAppearance(context, resId);
     }
 
     void requestFocus(boolean moveCursorToEnd) {

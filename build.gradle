@@ -44,7 +44,7 @@ ext.bintray = [
         user    : 'hendraanggrian',
         group   : 'io.github.hendraanggrian',
         artifact: 'pininputlayout',
-        version : '0.1.3',
+        version : '0.1.4',
         desc    : 'Android customizable PIN input view.',
         website : 'https://github.com/hendraanggrian/pininputlayout'
 ]
