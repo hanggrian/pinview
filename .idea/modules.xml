@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/pininputlayout-demo/pinedittext-demo.iml" filepath="$PROJECT_DIR$/pininputlayout-demo/pinedittext-demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pininputlayout/pininputlayout.iml" filepath="$PROJECT_DIR$/pininputlayout/pininputlayout.iml" />
-      <module fileurl="file://$PROJECT_DIR$/verificationedittext.iml" filepath="$PROJECT_DIR$/verificationedittext.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pininputlayout.iml" filepath="$PROJECT_DIR$/pininputlayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pininputlayout-demo/pininputlayout-demo.iml" filepath="$PROJECT_DIR$/pininputlayout-demo/pininputlayout-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pininputlayout/pininputlayout-pininputlayout.iml" filepath="$PROJECT_DIR$/pininputlayout/pininputlayout-pininputlayout.iml" />
     </modules>
   </component>
 </project>

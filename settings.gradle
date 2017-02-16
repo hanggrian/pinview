@@ -1,1 +1,1 @@
-include ':pinedittext-demo', ':pininputlayout'
+include ':pininputlayout', ':pininputlayout-demo'

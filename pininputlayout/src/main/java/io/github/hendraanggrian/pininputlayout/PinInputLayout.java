@@ -4,30 +4,31 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.hendraanggrian.pininputlayout.internal.PinInput;
-
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-public class PinInputLayout extends LinearLayout implements TextWatcher, View.OnKeyListener, View.OnFocusChangeListener {
+public class PinInputLayout extends LinearLayout implements TextWatcher, View.OnFocusChangeListener {
 
     private static final int DEFAULT_PIN_DIGITS = 4;
     private static final int IGNORE = -1;
 
     @NonNull private final List<PinInput> pinInputs;
     private int focusedPin;
+    private State currentState = State.INCOMPLETE;
+
+    @Nullable private OnStateChangedListener onStateChangedListener;
+    @Nullable private OnPinChangedListener onPinChangedListener;
 
     public PinInputLayout(Context context) {
         this(context, null);
@@ -61,7 +62,7 @@ public class PinInputLayout extends LinearLayout implements TextWatcher, View.On
         for (int i = 0; i < pinDigits; i++) {
             pinInputs.add(new PinInput(context, this));
             pinInputs.get(i).setMargin(i > 0 ? pinMargin : 0, 0, 0, 0);
-            pinInputs.get(i).setTextAppearance(pinTextAppearance);
+            pinInputs.get(i).setTextAppearance(context, pinTextAppearance);
             if (pinBackground != IGNORE)
                 pinInputs.get(i).setBackgroundResource(pinBackground);
             if (pinTextColor != IGNORE)
@@ -78,22 +79,29 @@ public class PinInputLayout extends LinearLayout implements TextWatcher, View.On
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (!s.toString().isEmpty() && focusedPin < pinInputs.size() - 1)
-            pinInputs.get(focusedPin + 1).requestFocus(true);
-        else if (s.toString().isEmpty() && focusedPin > 0)
-            pinInputs.get(focusedPin - 1).requestFocus(true);
+        if (onStateChangedListener != null) {
+            if (arePinsFilled() && currentState != State.COMPLETE) {
+                currentState = State.COMPLETE;
+                onStateChangedListener.onStateChanged(this, State.COMPLETE);
+            } else if (!arePinsFilled() && currentState != State.INCOMPLETE) {
+                currentState = State.INCOMPLETE;
+                onStateChangedListener.onStateChanged(this, State.INCOMPLETE);
+            }
+        }
+        if (onPinChangedListener != null) {
+            String[] pins = new String[pinInputs.size()];
+            for (int i = 0; i < pinInputs.size(); i++)
+                pins[i] = pinInputs.get(i).getText().toString();
+            onPinChangedListener.onPinChanged(this, pins);
+        }
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-    }
-
-    @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_DEL && ((PinInput) v).getText().toString().isEmpty()) {
-            pinInputs.get(focusedPin - 1).requestFocus();
-        }
-        return false;
+        if (!s.toString().isEmpty() && focusedPin < pinInputs.size() - 1)
+            pinInputs.get(focusedPin + 1).requestFocus(true);
+        else if (s.toString().isEmpty() && focusedPin > 0)
+            pinInputs.get(focusedPin - 1).requestFocus(true);
     }
 
     @Override
@@ -102,26 +110,52 @@ public class PinInputLayout extends LinearLayout implements TextWatcher, View.On
             focusedPin = pinInputs.indexOf((PinInput) v);
     }
 
+    public void setOnStateChangedListener(@Nullable OnStateChangedListener onStateChangedListener) {
+        this.onStateChangedListener = onStateChangedListener;
+    }
+
+    @Nullable
+    public OnStateChangedListener getOnStateChangedListener() {
+        return onStateChangedListener;
+    }
+
+    public void setOnPinChangedListener(@Nullable OnPinChangedListener onPinChangedListener) {
+        this.onPinChangedListener = onPinChangedListener;
+    }
+
+    @Nullable
+    public OnPinChangedListener getOnPinChangedListener() {
+        return onPinChangedListener;
+    }
+
     public void setInputType(int type) {
+        for (PinInput pinInput : pinInputs)
+            pinInput.setInputType(type);
+    }
+
+    public String getText() {
+        String code = "";
         for (PinInput PinInput : pinInputs)
-            PinInput.setInputType(type);
+            code += PinInput.getText();
+        return code;
     }
 
-    public List<PinInput> getPinInputs() {
-        return pinInputs;
-    }
-
-    public boolean arePinsFilled() {
-        for (EditText editText : pinInputs)
-            if (editText.getText().toString().isEmpty())
+    private boolean arePinsFilled() {
+        for (PinInput pinInput : pinInputs)
+            if (pinInput.getText().toString().isEmpty())
                 return false;
         return true;
     }
 
-    public String getCode() {
-        String code = "";
-        for (PinInput PinInput : pinInputs)
-            code += PinInput.getText().toString();
-        return code;
+    public enum State {
+        INCOMPLETE, COMPLETE
+    }
+
+    public interface OnStateChangedListener {
+        void onStateChanged(@NonNull PinInputLayout view, @NonNull State state);
+    }
+
+    public interface OnPinChangedListener {
+        void onPinChanged(@NonNull PinInputLayout view, @NonNull String... pins);
     }
 }
