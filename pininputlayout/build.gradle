@@ -12,15 +12,9 @@ android {
 }
 
 dependencies {
-    deps.test.each {
-        testCompile it
-    }
-    deps.androidTest.each {
-        androidTestCompile it
-    }
-    deps.main.each {
-        compile it
-    }
+    deps.test.each { testCompile it }
+    deps.androidTest.each { androidTestCompile it }
+    deps.main.each { compile it }
 }
 
 publish {
