@@ -12,9 +12,15 @@ android {
 }
 
 dependencies {
-    deps.test.each { testCompile it }
-    deps.androidTest.each { androidTestCompile it }
-    deps.main.each { compile it }
+    testCompile deps.junit
+    androidTestCompile(deps.testRunner) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile(deps.testEspresso) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+    compile deps.appcompatV7
 }
 
 publish {

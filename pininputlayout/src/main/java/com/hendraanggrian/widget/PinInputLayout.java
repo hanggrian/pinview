@@ -2,18 +2,16 @@ package com.hendraanggrian.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.hendraanggrian.pininputlayout.R;
 import com.hendraanggrian.widget.pininputlayout.PinInput;
+import com.hendraanggrian.widget.pininputlayout.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,6 @@ public class PinInputLayout extends LinearLayout implements TextWatcher, View.On
     @NonNull private final List<PinInput> pinInputs;
     private int focusedPin;
     private State currentState = State.INCOMPLETE;
-
     @Nullable private OnStateChangedListener onStateChangedListener;
     @Nullable private OnPinChangedListener onPinChangedListener;
 
@@ -37,41 +34,38 @@ public class PinInputLayout extends LinearLayout implements TextWatcher, View.On
     }
 
     public PinInputLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.pinStyle);
+        this(context, attrs, 0);
     }
 
     public PinInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public PinInputLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs);
-        final TypedArray array = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PinInputLayout, defStyleAttr, defStyleRes);
-        final int pinDigits = array.getInt(R.styleable.PinInputLayout_pinDigits, DEFAULT_PIN_DIGITS);
-        final int pinMargin = (int) array.getDimension(R.styleable.PinInputLayout_pinMargin, context.getResources().getDimension(R.dimen.margin_pin));
-        final int pinBackground = array.getResourceId(R.styleable.PinInputLayout_pinBackground, -1);
-        @StyleRes final int pinTextAppearance;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)
-            pinTextAppearance = array.getResourceId(R.styleable.PinInputLayout_pinTextAppearance, android.R.style.TextAppearance_Material_Display1);
-        else
-            pinTextAppearance = array.getResourceId(R.styleable.PinInputLayout_pinTextAppearance, android.R.style.TextAppearance_Large);
-        @ColorInt final int pinTextColor = array.getColor(R.styleable.PinInputLayout_pinTextColor, -1);
-        final float pinTextSize = array.getDimension(R.styleable.PinInputLayout_pinTextSize, -1);
-        array.recycle();
-
+        super(context, attrs, defStyleAttr);
         setOrientation(HORIZONTAL);
-        pinInputs = new ArrayList<>();
-        for (int i = 0; i < pinDigits; i++) {
-            pinInputs.add(new PinInput(context, this));
-            pinInputs.get(i).setMargin(i > 0 ? pinMargin : 0, 0, 0, 0);
-            pinInputs.get(i).setTextAppearance(context, pinTextAppearance);
-            if (pinBackground != -1)
-                pinInputs.get(i).setBackgroundResource(pinBackground);
-            if (pinTextColor != -1)
-                pinInputs.get(i).setTextColor(pinTextColor);
-            if (pinTextSize != -1)
-                pinInputs.get(i).setTextSize(pinTextSize);
-            addView(pinInputs.get(i));
+        TypedArray array = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PinInputLayout, defStyleAttr, 0);
+        try {
+            int pinDigits = array.getInt(R.styleable.PinInputLayout_pinDigits, DEFAULT_PIN_DIGITS);
+            int pinMargin = (int) array.getDimension(R.styleable.PinInputLayout_pinMargin, context.getResources().getDimension(R.dimen.margin_pin));
+            int pinBackground = array.getResourceId(R.styleable.PinInputLayout_pinBackground, -1);
+            int pinTextAppearance = array.getResourceId(R.styleable.PinInputLayout_pinTextAppearance, android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP
+                    ? android.R.style.TextAppearance_Material_Display1
+                    : android.R.style.TextAppearance_Large);
+            int pinTextColor = array.getColor(R.styleable.PinInputLayout_pinTextColor, -1);
+            float pinTextSize = array.getDimension(R.styleable.PinInputLayout_pinTextSize, -1);
+
+            pinInputs = new ArrayList<>();
+            for (int i = 0; i < pinDigits; i++) {
+                pinInputs.add(new PinInput(context, this));
+                pinInputs.get(i).setMargin(i > 0 ? pinMargin : 0, 0, 0, 0);
+                pinInputs.get(i).setTextAppearance(context, pinTextAppearance);
+                if (pinBackground != -1)
+                    pinInputs.get(i).setBackgroundResource(pinBackground);
+                if (pinTextColor != -1)
+                    pinInputs.get(i).setTextColor(pinTextColor);
+                if (pinTextSize != -1)
+                    pinInputs.get(i).setTextSize(pinTextSize);
+                addView(pinInputs.get(i));
+            }
+        } finally {
+            array.recycle();
         }
     }
 
@@ -101,9 +95,9 @@ public class PinInputLayout extends LinearLayout implements TextWatcher, View.On
     @Override
     public void afterTextChanged(Editable s) {
         if (!s.toString().isEmpty() && focusedPin < pinInputs.size() - 1)
-            pinInputs.get(focusedPin + 1).requestFocus(true);
+            pinInputs.get(focusedPin + 1).focus();
         else if (s.toString().isEmpty() && focusedPin > 0)
-            pinInputs.get(focusedPin - 1).requestFocus(true);
+            pinInputs.get(focusedPin - 1).focus();
     }
 
     @Override

@@ -2,19 +2,23 @@ package com.hendraanggrian.widget.pininputlayout;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-public class PinInput extends EditText {
+public class PinInput extends AppCompatEditText {
+
+    @NonNull private final GestureDetector gestureDetector;
 
     public <Listener extends TextWatcher & OnFocusChangeListener> PinInput(Context context, @NonNull Listener listener) {
         super(context);
@@ -28,6 +32,20 @@ public class PinInput extends EditText {
         setInputType(InputType.TYPE_CLASS_NUMBER);
         setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
         setGravity(Gravity.CENTER_HORIZONTAL);
+
+        gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                setSelection(getText().length());
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     public PinInput(Context context, AttributeSet attrs) {
@@ -35,24 +53,13 @@ public class PinInput extends EditText {
     }
 
     public PinInput(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public PinInput(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr);
         throw new RuntimeException("PinInput isn't meant to be xml inflated.");
     }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public void setTextAppearance(Context context, int resId) {
-        super.setTextAppearance(context, resId);
-    }
-
-    public void requestFocus(boolean moveCursorToEnd) {
+    public void focus() {
         requestFocus();
-        if (moveCursorToEnd)
-            setSelection(getText().length());
+        setSelection(getText().length());
     }
 
     public void setMargin(int left, int top, int right, int bottom) {

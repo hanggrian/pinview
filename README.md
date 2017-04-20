@@ -7,7 +7,9 @@ Android customizable PIN input view.
 Download
 --------
 ```gradle
-compile 'io.github.hendraanggrian:pininputlayout:0.1.4'
+dependencies {
+    compile 'com.hendraanggrian:pininputlayout:0.2.0'
+}
 ```
 
 Usage

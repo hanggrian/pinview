@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="PinInputLayoutStyle">
-        <attr name="pinStyle" format="reference"/>
-    </declare-styleable>
-
     <declare-styleable name="PinInputLayout">
         <attr name="pinDigits" format="integer"/>
         <attr name="pinMargin" format="dimension"/>
