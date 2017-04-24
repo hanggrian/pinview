@@ -1,5 +1,5 @@
-![logo](/art/logo.png) PinInputLayout
-=====================================
+PinInputLayout
+==============
 Android customizable PIN input view.
 
 ![demo](/art/demo.gif)
