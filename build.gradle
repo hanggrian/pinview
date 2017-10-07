@@ -1,16 +1,40 @@
 buildscript {
+    ext.versions = [
+            release   : '0.3.0',
+            // android
+            sdk       : [
+                    min   : 14,
+                    target: 26,
+            ],
+            buildTools: '26.0.2',
+            // main
+            kotlin    : '1.1.51',
+            support   : '26.1.0',
+            // test
+            ruler     : '0.5',
+            runner    : '0.5',
+            espresso  : '2.2.2',
+            junit     : '4.12'
+    ]
+
     repositories {
+        google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
-        classpath 'com.novoda:bintray-release:0.3.4'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta7'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+        classpath 'com.novoda:bintray-release:0.5.0'
     }
 }
 
 allprojects {
     repositories {
+        google()
         jcenter()
+    }
+    tasks.withType(Javadoc) {
+        enabled = false
     }
 }
 
@@ -18,37 +42,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-ext.android = [
-        sdk       : [
-                'min'   : 11,
-                'target': 25
-        ],
-        buildTools: '25.0.2',
-        testRunner: 'android.support.test.runner.AndroidJUnitRunner'
-]
-
-def versionJunit = '4.12'
-def versionTestRunner = '0.5'
-def versionTestEspresso = '2.2.2'
-def versionSupport = '25.3.1'
-
-ext.deps = [
-        // test
-        junit       : "junit:junit:$versionJunit",
-        // android test
-        testRunner  : "com.android.support.test:runner:$versionTestRunner",
-        testEspresso: "com.android.support.test.espresso:espresso-core:$versionTestEspresso",
-        // android
-        appcompatV7 : "com.android.support:appcompat-v7:$versionSupport"
-]
-
-ext.bintray = [
-        user    : 'hendraanggrian',
-        group   : 'com.hendraanggrian',
-        artifact: 'pininputlayout',
-        version : '0.2.0',
-        desc    : 'Android customizable PIN input view.',
-        website : 'https://github.com/hendraanggrian/pininputlayout'
-]
-
-//$ ./gradlew bintrayUpload -PbintrayUser=hendraanggrian -PbintrayKey= -PdryRun=false
+/**
+ ./gradlew :pininputlayout:clean :pininputlayout:build
+ ./gradlew :pininputlayout:bintrayUpload -PbintrayUser=hendraanggrian -PdryRun=false -PbintrayKey=
+ */

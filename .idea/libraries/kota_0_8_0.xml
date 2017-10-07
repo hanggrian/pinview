@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="kota-0.8.0">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/kota-0.8.0.aar/3c928b0f2529ca51a4ef61d8490ceac9/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/kota-0.8.0.aar/3c928b0f2529ca51a4ef61d8490ceac9/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.hendraanggrian/kota/0.8.0/874cbf6b3cee8251cf6c5df46e5df05881e66a37/kota-0.8.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

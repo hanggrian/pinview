@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PinInputLayout">
+        <attr name="pinDigits" format="integer"/>
+        <attr name="pinGap" format="dimension"/>
+        <attr name="pinTextAppearance" format="reference"/>
+        <attr name="pinTextSize" format="dimension"/>
+        <attr name="pinTextColor" format="color"/>
+    </declare-styleable>
+</resources>
