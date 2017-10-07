@@ -10,14 +10,15 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
-import com.hendraanggrian.pininputlayout.R
+import com.hendraanggrian.pinedittext.R
 
-open class PinInputLayout @JvmOverloads constructor(
+open class PinEditText @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr) {
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     companion object {
         private const val DEFAULT_PIN_DIGITS = 4
@@ -30,39 +31,36 @@ open class PinInputLayout @JvmOverloads constructor(
             if (onStateChangedListener != null) {
                 if (areInputsFilled && !mComplete) {
                     mComplete = true
-                    onStateChangedListener!!(this@PinInputLayout, true)
+                    onStateChangedListener!!(this@PinEditText, true)
                 } else if (!areInputsFilled && mComplete) {
                     mComplete = false
-                    onStateChangedListener!!(this@PinInputLayout, false)
+                    onStateChangedListener!!(this@PinEditText, false)
                 }
             }
             if (onPinChangedListener != null) {
-                val pins = Array(inputs.size) { "" }
-                for (i in inputs.indices) {
-                    pins[i] = inputs[i].text.toString()
+                val text = Array(pins.size) { "" }
+                for (i in pins.indices) {
+                    text[i] = pins[i].text.toString()
                 }
-                onPinChangedListener!!(this@PinInputLayout, pins)
+                onPinChangedListener!!(this@PinEditText, text)
             }
         }
 
         override fun afterTextChanged(s: Editable) {
-            if (!s.toString().isEmpty() && mFocusedInput < inputs.size - 1) {
-                inputs[mFocusedInput + 1].requestFocus()
+            if (!s.toString().isEmpty() && mFocusedInput < pins.size - 1) {
+                pins[mFocusedInput + 1].requestFocus()
             } else if (s.toString().isEmpty() && mFocusedInput > 0) {
-                inputs[mFocusedInput - 1].requestFocus()
+                pins[mFocusedInput - 1].requestFocus()
             }
         }
     }
     private val mOnFocusedChangeListener: View.OnFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
         if (hasFocus) {
-            mFocusedInput = inputs.indexOf(v as PinInput)
+            mFocusedInput = pins.indexOf(v as Pin)
         }
     }
 
-    val inputs: List<PinInput>
-    var onStateChangedListener: ((PinInputLayout, isComplete: Boolean) -> Unit)? = null
-    var onPinChangedListener: ((PinInputLayout, pins: Array<String>) -> Unit)? = null
-
+    private val mContainer: LinearLayout = LinearLayout(context)
     private var mFocusedInput: Int = 0
     private var mComplete: Boolean = false
     private var mDigits: Int
@@ -71,20 +69,24 @@ open class PinInputLayout @JvmOverloads constructor(
     @ColorInt private var mTextColor: Int
     private var mTextSize: Float
 
-    init {
-        orientation = LinearLayout.HORIZONTAL
+    open var onStateChangedListener: ((PinEditText, isComplete: Boolean) -> Unit)? = null
+    open var onPinChangedListener: ((PinEditText, pins: Array<String>) -> Unit)? = null
 
-        val a = context.obtainStyledAttributes(attrs, R.styleable.PinInputLayout, defStyleAttr, 0)
-        mDigits = a.getInt(R.styleable.PinInputLayout_pinDigits, DEFAULT_PIN_DIGITS)
-        mGap = a.getDimensionPixelSize(R.styleable.PinInputLayout_pinGap, context.resources.getDimensionPixelSize(R.dimen.margin_pin))
-        mTextAppearance = a.getResourceId(R.styleable.PinInputLayout_pinTextAppearance,
+    init {
+        mContainer.orientation = LinearLayout.HORIZONTAL
+        mContainer.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+
+        val a = context.obtainStyledAttributes(attrs, R.styleable.PinEditText, defStyleAttr, 0)
+        mDigits = a.getInt(R.styleable.PinEditText_pinDigits, DEFAULT_PIN_DIGITS)
+        mGap = a.getDimensionPixelSize(R.styleable.PinEditText_pinGap, context.resources.getDimensionPixelSize(R.dimen.margin_pin))
+        mTextAppearance = a.getResourceId(R.styleable.PinEditText_pinTextAppearance,
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) android.R.style.TextAppearance_Material_Display1
                 else android.R.style.TextAppearance_Large)
-        mTextColor = a.getColor(R.styleable.PinInputLayout_pinTextColor, -1)
-        mTextSize = a.getDimension(R.styleable.PinInputLayout_pinTextSize, -1f)
+        mTextColor = a.getColor(R.styleable.PinEditText_pinTextColor, -1)
+        mTextSize = a.getDimension(R.styleable.PinEditText_pinTextSize, -1f)
 
-        inputs = (0 until mDigits).map {
-            val pin = PinInput(context)
+        (0 until mDigits).forEach {
+            val pin = Pin(context)
             pin.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { weight = 1f }
             pin.addTextChangedListener(mTextWatcher)
             pin.onFocusChangeListener = mOnFocusedChangeListener
@@ -100,22 +102,23 @@ open class PinInputLayout @JvmOverloads constructor(
             if (mTextSize != -1f) {
                 pin.textSize = mTextSize
             }
-            addView(pin)
-            pin
+            mContainer.addView(pin)
         }
         a.recycle()
+
+        addView(mContainer)
     }
 
-    val text: String
+    open val text: String
         get() {
-            var pin = ""
-            forEachInput { pin += text }
-            return pin
+            val sb = StringBuilder()
+            forEachPin { sb.append(this) }
+            return sb.toString()
         }
 
-    fun clear() = forEachInput { setText("") }
+    fun clear() = forEachPin { setText("") }
 
-    private fun forEachInput(block: PinInput.() -> Unit) = inputs.forEach { block(it) }
-
-    private val areInputsFilled: Boolean get() = inputs.none { it.text.toString().isEmpty() }
+    private val pins: List<Pin> get() = (0 until mContainer.childCount).map { mContainer.getChildAt(it) as Pin }
+    private fun forEachPin(block: Pin.() -> Unit) = pins.forEach { block(it) }
+    private val areInputsFilled: Boolean get() = pins.none { it.text.toString().isEmpty() }
 }

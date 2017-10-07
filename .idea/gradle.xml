@@ -9,7 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/example" />
-            <option value="$PROJECT_DIR$/pininputlayout" />
+            <option value="$PROJECT_DIR$/pinedittext" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -22,7 +22,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.hendraanggrian.widget.PinInputLayout
+        <com.hendraanggrian.widget.PinEditText
             android:id="@+id/pinInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    compile project(':pininputlayout')
+    compile project(':pinedittext')
     compile "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
     compile 'com.hendraanggrian:kota:0.8.0'
     compile "com.android.support:appcompat-v7:$versions.support"

@@ -12,7 +12,7 @@ import android.view.GestureDetector
 import android.view.Gravity
 import android.view.MotionEvent
 
-open class PinInput(
+open class Pin(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = R.attr.editTextStyle
