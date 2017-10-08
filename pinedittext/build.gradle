@@ -47,8 +47,8 @@ dependencies {
 publish {
     userOrg = bintray.user
     groupId = bintray.group
-    artifactId = bintray.artifact.pininputlayout.id
+    artifactId = bintray.artifact.pinedittext.id
     publishVersion = versions.release
-    desc = bintray.artifact.pininputlayout.desc
-    website = bintray.artifact.pininputlayout.website
+    desc = bintray.artifact.pinedittext.desc
+    website = bintray.artifact.pinedittext.website
 }

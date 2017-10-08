@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.hendraanggrian:pininputlayout:0.3.0'
+    compile 'com.hendraanggrian:pinedittext:0.1.0'
 }
 ```
 
@@ -21,30 +21,29 @@ Usage
 -----
 Declare view in xml layout.
 ```xml
-<io.github.hendraanggrian.pininputlayout.PinInputLayout
-        android:id="@+id/pininputlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:pinDigits="4"
-        app:pinTextAppearance="@style/TextAppearance.AppCompat.Display2"/>
+<com.hendraanggrian.PinEditText
+    android:id="@+id/editText"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:pinTextAppearance="@style/TextAppearance.AppCompat.Display2"
+    app:pinCount="4" />
 ```
 
 Then in java.
 ```java
-PinInputLayout pinInputLayout = (PinInputLayout) findViewById(R.id.pininputlayout);
-pinInputLayout.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-String code = pinInputLayout.getText();
+PinEditText editText = (PinEditText) findViewById(R.id.editText);
+CharSequence pin = editText.getText();
 
 // set listener
-pinInputLayout.setOnStateChangedListener(new PinInputLayout.OnStateChangedListener() {
+editText.setOnStateChangedListener(new OnStateChangedListener() {
     @Override
-    public void onStateChanged(@NonNull PinInputLayout view, @NonNull PinInputLayout.State state) {
+    public void onStateChanged(@NonNull PinEditText view, boolean isComplete) {
         // do something
     }
 });
-pinInputLayout.setOnPinChangedListener(new PinInputLayout.OnPinChangedListener() {
+editText.setOnPinChangedListener(new OnPinChangedListener() {
     @Override
-    public void onStateChanged(@NonNull PinInputLayout view, @NonNull String... mPins) {
+    public void onStateChanged(@NonNull PinEditText view, @NonNull String... mPins) {
         // do something
     }
 });

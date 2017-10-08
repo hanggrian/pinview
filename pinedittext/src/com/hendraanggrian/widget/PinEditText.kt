@@ -94,13 +94,13 @@ open class PinEditText @JvmOverloads constructor(
         mOnPinChangedListener = listener
     }
 
-    open val focusedPin: Int get() = mFocusedPin
-
     open val isComplete: Boolean get() = mComplete
 
     open val count: Int get() = mPins.count()
 
     open fun setGap(gap: Int) = forEachPin { (layoutParams as MarginLayoutParams).setMargins(gap / 2, 0, gap / 2, 0) }
+
+    open fun setSelection(index: Int) = mPins[index].requestFocus()
 
     open val text: String
         get() {
@@ -116,26 +116,26 @@ open class PinEditText @JvmOverloads constructor(
 
     open fun setTextAppearance(@AnyRes resId: Int) = forEachPin {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setTextAppearance(resId)
+            it.setTextAppearance(resId)
         } else {
             @Suppress("DEPRECATION")
-            setTextAppearance(context, resId)
+            it.setTextAppearance(context, resId)
         }
     }
 
     open fun setTextColor(@ColorInt color: Int) = setTextColor(ColorStateList.valueOf(color))
-    open fun setTextColor(colors: ColorStateList) = forEachPin { setTextColor(colors) }
+    open fun setTextColor(colors: ColorStateList) = forEachPin { it.setTextColor(colors) }
 
     open fun setTextSize(size: Float) = setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
-    open fun setTextSize(unit: Int, size: Float) = forEachPin { setTextSize(unit, size) }
+    open fun setTextSize(unit: Int, size: Float) = forEachPin { it.setTextSize(unit, size) }
 
-    open fun addTextChangedListener(watcher: TextWatcher) = forEachPin { addTextChangedListener(watcher) }
-    open fun removeTextChangedListener(watcher: TextWatcher) = forEachPin { removeTextChangedListener(watcher) }
+    open fun addTextChangedListener(watcher: TextWatcher) = forEachPin { it.addTextChangedListener(watcher) }
+    open fun removeTextChangedListener(watcher: TextWatcher) = forEachPin { it.removeTextChangedListener(watcher) }
 
     private fun generatePin(): Pin = Pin(context).apply {
         layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { weight = 1f }
         onFocusChangeListener = mOnFocusedChangeListener
     }
 
-    private fun forEachPin(block: Pin.() -> Unit) = mPins.forEach { block(it) }
+    private fun forEachPin(block: (Pin) -> Unit) = mPins.forEach { block(it) }
 }
