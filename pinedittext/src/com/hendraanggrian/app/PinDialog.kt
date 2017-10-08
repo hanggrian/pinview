@@ -2,6 +2,7 @@ package com.hendraanggrian.app
 
 import android.content.Context
 import android.content.DialogInterface
+import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatDialog
 import android.text.TextUtils
 import android.view.View
@@ -50,11 +51,17 @@ open class PinDialog @JvmOverloads constructor(
     }
 
     @JvmOverloads
+    open fun setNegativeButton(@StringRes textId: Int, onClick: ((DialogInterface, Int, CharSequence) -> Unit)? = null) = setNegativeButton(context.getText(textId), onClick)
+
+    @JvmOverloads
     open fun setPositiveButton(text: CharSequence, onClick: ((DialogInterface, Int, CharSequence) -> Unit)? = null) {
         positiveButton.visibility = if (TextUtils.isEmpty(text)) View.GONE else View.VISIBLE
         positiveButton.text = text
         mPositiveOnClick = onClick
     }
+
+    @JvmOverloads
+    open fun setPositiveButton(@StringRes textId: Int, onClick: ((DialogInterface, Int, CharSequence) -> Unit)? = null) = setPositiveButton(context.getText(textId), onClick)
 
     open class Builder constructor(
             val context: Context,
@@ -69,6 +76,8 @@ open class PinDialog @JvmOverloads constructor(
             return this
         }
 
+        open fun setTitle(@StringRes titleId: Int): Builder = setTitle(context.getText(titleId))
+
         @JvmOverloads
         open fun setNegativeButton(text: CharSequence, onClick: ((DialogInterface, Int, CharSequence) -> Unit)? = null): Builder {
             negativeButton = Pair(text, onClick)
@@ -76,10 +85,16 @@ open class PinDialog @JvmOverloads constructor(
         }
 
         @JvmOverloads
+        open fun setNegativeButton(@StringRes textId: Int, onClick: ((DialogInterface, Int, CharSequence) -> Unit)? = null): Builder = setNegativeButton(context.getText(textId), onClick)
+
+        @JvmOverloads
         open fun setPositiveButton(text: CharSequence, onClick: ((DialogInterface, Int, CharSequence) -> Unit)? = null): Builder {
             positiveButton = Pair(text, onClick)
             return this
         }
+
+        @JvmOverloads
+        open fun setPositiveButton(@StringRes textId: Int, onClick: ((DialogInterface, Int, CharSequence) -> Unit)? = null): Builder = setPositiveButton(context.getText(textId), onClick)
 
         open fun build(): PinDialog {
             val dialog = PinDialog(context, theme)

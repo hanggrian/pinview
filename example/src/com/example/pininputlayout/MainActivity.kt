@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     fun buttonOnClick(view: View) = PinDialog.Builder(this)
             .setTitle("Enter pin")
-            .setNegativeButton(getText(android.R.string.cancel))
-            .setPositiveButton(getText(android.R.string.ok), { _, _, text -> toast(text) })
+            .setNegativeButton(android.R.string.cancel)
+            .setPositiveButton(android.R.string.ok, { _, _, text -> toast(text) })
             .build()
             .show()
 }

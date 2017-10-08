@@ -98,14 +98,14 @@ open class PinEditText @JvmOverloads constructor(
 
     open val count: Int get() = mPins.count()
 
-    open fun setGap(gap: Int) = forEachPin { (layoutParams as MarginLayoutParams).setMargins(gap / 2, 0, gap / 2, 0) }
+    open fun setGap(gap: Int) = forEachPin { (it.layoutParams as MarginLayoutParams).setMargins(gap / 2, 0, gap / 2, 0) }
 
     open fun setSelection(index: Int) = mPins[index].requestFocus()
 
     open val text: String
         get() {
             val sb = StringBuilder()
-            forEachPin { sb.append(text) }
+            forEachPin { sb.append(it.text) }
             return sb.toString()
         }
 
