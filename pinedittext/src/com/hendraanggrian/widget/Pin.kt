@@ -12,7 +12,7 @@ import android.view.GestureDetector
 import android.view.Gravity
 import android.view.MotionEvent
 
-open class Pin(
+internal class Pin @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = R.attr.editTextStyle
@@ -46,8 +46,6 @@ open class Pin(
 
     override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect)
-        if (focused && text.isNotEmpty()) {
-            setSelection(MAX_LENGTH)
-        }
+        if (focused && text.isNotEmpty()) setSelection(MAX_LENGTH)
     }
 }

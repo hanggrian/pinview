@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="PinEditTextStyle">
+        <attr name="pinEditTextStyle" format="reference" />
+    </declare-styleable>
+
     <declare-styleable name="PinEditText">
-        <attr name="pinDigits" format="integer"/>
-        <attr name="pinGap" format="dimension"/>
-        <attr name="pinTextAppearance" format="reference"/>
-        <attr name="pinTextSize" format="dimension"/>
-        <attr name="pinTextColor" format="color"/>
+        <attr name="pinCount" format="integer" />
+        <attr name="pinGap" format="dimension" />
+
+        <attr name="android:text" />
+        <attr name="android:textAppearance" />
+        <attr name="android:textSize" />
+        <attr name="android:textColor" />
     </declare-styleable>
 </resources>

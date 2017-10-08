@@ -1,12 +1,16 @@
 package com.hendraanggrian.widget
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Build
 import android.support.annotation.AnyRes
+import android.support.annotation.AttrRes
 import android.support.annotation.ColorInt
+import android.support.annotation.StyleRes
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
@@ -17,108 +21,121 @@ import com.hendraanggrian.pinedittext.R
 open class PinEditText @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+        @AttrRes defStyleAttr: Int = R.attr.pinEditTextStyle,
+        @StyleRes defStyleRes: Int = R.style.Widget_PinEditText
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    companion object {
-        private const val DEFAULT_PIN_DIGITS = 4
-    }
-
-    private val mTextWatcher = object : TextWatcher {
+    private val mTextWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            if (onStateChangedListener != null) {
-                if (areInputsFilled && !mComplete) {
+            if (mOnStateChangedListener != null) {
+                if (arePinsFilled && !mComplete) {
                     mComplete = true
-                    onStateChangedListener!!(this@PinEditText, true)
-                } else if (!areInputsFilled && mComplete) {
+                    mOnStateChangedListener!!(this@PinEditText, true)
+                } else if (!arePinsFilled && mComplete) {
                     mComplete = false
-                    onStateChangedListener!!(this@PinEditText, false)
+                    mOnStateChangedListener!!(this@PinEditText, false)
                 }
             }
-            if (onPinChangedListener != null) {
-                val text = Array(pins.size) { "" }
-                for (i in pins.indices) {
-                    text[i] = pins[i].text.toString()
-                }
-                onPinChangedListener!!(this@PinEditText, text)
-            }
+            mOnPinChangedListener?.invoke(this@PinEditText, text)
         }
 
         override fun afterTextChanged(s: Editable) {
-            if (!s.toString().isEmpty() && mFocusedInput < pins.size - 1) {
-                pins[mFocusedInput + 1].requestFocus()
-            } else if (s.toString().isEmpty() && mFocusedInput > 0) {
-                pins[mFocusedInput - 1].requestFocus()
+            if (!s.toString().isEmpty() && mFocusedPin < mPins.size - 1) {
+                mPins[mFocusedPin + 1].requestFocus()
+            } else if (s.toString().isEmpty() && mFocusedPin > 0) {
+                mPins[mFocusedPin - 1].requestFocus()
             }
         }
-    }
-    private val mOnFocusedChangeListener: View.OnFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
-        if (hasFocus) {
-            mFocusedInput = pins.indexOf(v as Pin)
-        }
-    }
 
-    private val mContainer: LinearLayout = LinearLayout(context)
-    private var mFocusedInput: Int = 0
+        private val arePinsFilled: Boolean get() = mPins.none { it.text.toString().isEmpty() }
+    }
+    private val mOnFocusedChangeListener: View.OnFocusChangeListener = OnFocusChangeListener { v, hasFocus -> if (hasFocus) mFocusedPin = mPins.indexOf(v as Pin) }
+    private val mPinsContainer: LinearLayout = LinearLayout(context)
+    private val mPins: List<Pin>
+    private var mFocusedPin: Int = 0
     private var mComplete: Boolean = false
-    private var mDigits: Int
-    private val mGap: Int
-    @AnyRes private var mTextAppearance: Int
-    @ColorInt private var mTextColor: Int
-    private var mTextSize: Float
 
-    open var onStateChangedListener: ((PinEditText, isComplete: Boolean) -> Unit)? = null
-    open var onPinChangedListener: ((PinEditText, pins: Array<String>) -> Unit)? = null
+    private var mOnStateChangedListener: ((PinEditText, Boolean) -> Unit)? = null
+    private var mOnPinChangedListener: ((PinEditText, String) -> Unit)? = null
 
     init {
-        mContainer.orientation = LinearLayout.HORIZONTAL
-        mContainer.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        mPinsContainer.orientation = LinearLayout.HORIZONTAL
+        mPinsContainer.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        addView(mPinsContainer)
 
-        val a = context.obtainStyledAttributes(attrs, R.styleable.PinEditText, defStyleAttr, 0)
-        mDigits = a.getInt(R.styleable.PinEditText_pinDigits, DEFAULT_PIN_DIGITS)
-        mGap = a.getDimensionPixelSize(R.styleable.PinEditText_pinGap, context.resources.getDimensionPixelSize(R.dimen.margin_pin))
-        mTextAppearance = a.getResourceId(R.styleable.PinEditText_pinTextAppearance,
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) android.R.style.TextAppearance_Material_Display1
-                else android.R.style.TextAppearance_Large)
-        mTextColor = a.getColor(R.styleable.PinEditText_pinTextColor, -1)
-        mTextSize = a.getDimension(R.styleable.PinEditText_pinTextSize, -1f)
-
-        (0 until mDigits).forEach {
-            val pin = Pin(context)
-            pin.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { weight = 1f }
-            pin.addTextChangedListener(mTextWatcher)
-            pin.onFocusChangeListener = mOnFocusedChangeListener
-            (pin.layoutParams as LinearLayout.LayoutParams).setMargins(if (it > 0) mGap else 0, 0, 0, 0)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                pin.setTextAppearance(mTextAppearance)
-            } else @Suppress("DEPRECATION") {
-                pin.setTextAppearance(context, mTextAppearance)
-            }
-            if (mTextColor != -1) {
-                pin.setTextColor(mTextColor)
-            }
-            if (mTextSize != -1f) {
-                pin.textSize = mTextSize
-            }
-            mContainer.addView(pin)
+        val a = context.obtainStyledAttributes(attrs, R.styleable.PinEditText, defStyleAttr, defStyleRes)
+        mPins = (0 until a.getInt(R.styleable.PinEditText_pinCount, 0))
+                .map {
+                    val pin = generatePin()
+                    mPinsContainer.addView(pin)
+                    pin
+                }
+        setGap(a.getDimensionPixelSize(R.styleable.PinEditText_pinGap, 0))
+        if (a.hasValue(R.styleable.PinEditText_android_text)) {
+            setText(a.getText(R.styleable.PinEditText_android_text))
         }
+        setTextAppearance(a.getResourceId(R.styleable.PinEditText_android_textAppearance, 0))
+        if (a.hasValue(R.styleable.PinEditText_android_textColor)) {
+            setTextColor(a.getColorStateList(R.styleable.PinEditText_android_textColor))
+        }
+        if (a.hasValue(R.styleable.PinEditText_android_textSize)) {
+            setTextSize(a.getDimension(R.styleable.PinEditText_android_textSize, 0f))
+        }
+        addTextChangedListener(mTextWatcher)
         a.recycle()
-
-        addView(mContainer)
     }
+
+    open fun setOnStateChangedListener(listener: ((view: PinEditText, isComplete: Boolean) -> Unit)?) {
+        mOnStateChangedListener = listener
+    }
+
+    open fun setOnPinChangedListener(listener: ((view: PinEditText, text: String) -> Unit)?) {
+        mOnPinChangedListener = listener
+    }
+
+    open val focusedPin: Int get() = mFocusedPin
+
+    open val isComplete: Boolean get() = mComplete
+
+    open val count: Int get() = mPins.count()
+
+    open fun setGap(gap: Int) = forEachPin { (layoutParams as MarginLayoutParams).setMargins(gap / 2, 0, gap / 2, 0) }
 
     open val text: String
         get() {
             val sb = StringBuilder()
-            forEachPin { sb.append(this) }
+            forEachPin { sb.append(text) }
             return sb.toString()
         }
 
-    fun clear() = forEachPin { setText("") }
+    open fun setText(text: CharSequence) = text.toString().toCharArray().forEachIndexed { index, c ->
+        check(Character.isDigit(c), { "Text should be number only." })
+        mPins[index].setText(c.toString())
+    }
 
-    private val pins: List<Pin> get() = (0 until mContainer.childCount).map { mContainer.getChildAt(it) as Pin }
-    private fun forEachPin(block: Pin.() -> Unit) = pins.forEach { block(it) }
-    private val areInputsFilled: Boolean get() = pins.none { it.text.toString().isEmpty() }
+    open fun setTextAppearance(@AnyRes resId: Int) = forEachPin {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            setTextAppearance(resId)
+        } else {
+            @Suppress("DEPRECATION")
+            setTextAppearance(context, resId)
+        }
+    }
+
+    open fun setTextColor(@ColorInt color: Int) = setTextColor(ColorStateList.valueOf(color))
+    open fun setTextColor(colors: ColorStateList) = forEachPin { setTextColor(colors) }
+
+    open fun setTextSize(size: Float) = setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+    open fun setTextSize(unit: Int, size: Float) = forEachPin { setTextSize(unit, size) }
+
+    open fun addTextChangedListener(watcher: TextWatcher) = forEachPin { addTextChangedListener(watcher) }
+    open fun removeTextChangedListener(watcher: TextWatcher) = forEachPin { removeTextChangedListener(watcher) }
+
+    private fun generatePin(): Pin = Pin(context).apply {
+        layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { weight = 1f }
+        onFocusChangeListener = mOnFocusedChangeListener
+    }
+
+    private fun forEachPin(block: Pin.() -> Unit) = mPins.forEach { block(it) }
 }

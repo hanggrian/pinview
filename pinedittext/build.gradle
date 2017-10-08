@@ -31,7 +31,7 @@ android {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
-    compile "com.android.support:design:$versions.support"
+    compile "com.android.support:appcompat-v7:$versions.support"
     androidTestCompile("com.android.support.test:rules:$versions.rules") {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
@@ -48,7 +48,7 @@ publish {
     userOrg = bintray.user
     groupId = bintray.group
     artifactId = bintray.artifact.pininputlayout.id
-    publishVersion = versions.support
+    publishVersion = versions.release
     desc = bintray.artifact.pininputlayout.desc
     website = bintray.artifact.pininputlayout.website
 }

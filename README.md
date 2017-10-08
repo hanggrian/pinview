@@ -39,7 +39,7 @@ pinInputLayout.setOnStateChangedListener(new PinInputLayout.OnStateChangedListen
 });
 pinInputLayout.setOnPinChangedListener(new PinInputLayout.OnPinChangedListener() {
     @Override
-    public void onStateChanged(@NonNull PinInputLayout view, @NonNull String... pins) {
+    public void onStateChanged(@NonNull PinInputLayout view, @NonNull String... mPins) {
         // do something
     }
 });

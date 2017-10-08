@@ -43,6 +43,6 @@ task clean(type: Delete) {
 }
 
 /**
- ./gradlew :pininputlayout:clean :pininputlayout:build
- ./gradlew :pininputlayout:bintrayUpload -PbintrayUser=hendraanggrian -PdryRun=false -PbintrayKey=
+ ./gradlew :pinedittext:clean :pinedittext:build
+ ./gradlew :pinedittext:bintrayUpload -PbintrayUser=hendraanggrian -PdryRun=false -PbintrayKey=
  */
