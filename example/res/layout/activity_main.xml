@@ -14,7 +14,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            app:title="Enter your pin" />
+            app:title="Enter your pin"
+            app:titleTextColor="?colorAccent" />
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
