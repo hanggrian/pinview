@@ -39,7 +39,7 @@
             android:layout_marginTop="2dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-        <com.hendraanggrian.widget.PinEditText
+        <com.hendraanggrian.appcompat.widget.PinView
             android:id="@+id/pinInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
