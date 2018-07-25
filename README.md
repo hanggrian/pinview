@@ -72,4 +72,5 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[demo]: /art/demo.gif
+[demo1]: /art/demo1.gif
+[demo2]: /art/demo2.gif
