@@ -7,9 +7,4 @@
 
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
     </style>
-
-    <style name="PinEditTextDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="windowFixedWidthMajor">70%</item>
-        <item name="windowFixedWidthMinor">70%</item>
-    </style>
 </resources>

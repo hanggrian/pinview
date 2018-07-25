@@ -5,7 +5,6 @@ import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
     android("library")
-    kotlin("android")
     dokka
     `bintray-release`
 }
@@ -45,7 +44,6 @@ android {
 val ktlint by configurations.creating
 
 dependencies {
-    api(kotlin("stdlib", VERSION_KOTLIN))
     implementation(androidx("appcompat"))
 
     testImplementation(junit())

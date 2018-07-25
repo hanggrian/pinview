@@ -9,38 +9,6 @@ Android customizable PIN input view.
 
 ![demo][demo]
 
-Usage
------
-Declare view in xml layout.
-```xml
-<com.hendraanggrian.PinEditText
-    android:id="@+id/editText"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:pinTextAppearance="@style/TextAppearance.AppCompat.Display2"
-    app:pinCount="4" />
-```
-
-Then in java.
-```java
-PinEditText editText = (PinEditText) findViewById(R.id.editText);
-CharSequence pin = editText.getText();
-
-// set listener
-editText.setOnStateChangedListener(new OnStateChangedListener() {
-    @Override
-    public void onStateChanged(@NonNull PinEditText view, boolean isComplete) {
-        // do something
-    }
-});
-editText.setOnPinChangedListener(new OnPinChangedListener() {
-    @Override
-    public void onStateChanged(@NonNull PinEditText view, @NonNull String... mPins) {
-        // do something
-    }
-});
-```
-
 Download
 --------
 ```gradle
@@ -50,8 +18,41 @@ repositories {
 }
 
 dependencies {
-    compile 'com.hendraanggrian:pinedittext:0.1'
+    compile "com.hendraanggrian.appcompat:pinview:$version"
+    compile "com.hendraanggrian.appcompat:socialview-suggestions:$version"
 }
+```
+
+Usage
+-----
+Declare view in xml layout.
+```xml
+<com.hendraanggrian.PinView
+    android:id="@+id/pinView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:pinTextAppearance="@style/TextAppearance.AppCompat.Display2"
+    app:pinCount="4" />
+```
+
+Then in java.
+```java
+PinView view = (PinView) findViewById(R.id.pinView);
+CharSequence pin = view.getText();
+
+// set listener
+view.setOnStateChangedListener(new OnStateChangedListener() {
+    @Override
+    public void onStateChanged(@NonNull PinEditText view, boolean isComplete) {
+        // do something
+    }
+});
+view.setOnPinChangedListener(new OnPinChangedListener() {
+    @Override
+    public void onStateChanged(@NonNull PinEditText view, @NonNull String... mPins) {
+        // do something
+    }
+});
 ```
 
 License
