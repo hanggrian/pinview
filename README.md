@@ -7,7 +7,8 @@ PinView
 
 Android customizable PIN input view.
 
-![demo][demo]
+![demo1][demo1]
+![demo2][demo2]
 
 Download
 --------
@@ -57,7 +58,7 @@ view.setOnPinChangedListener(new OnPinChangedListener() {
 
 License
 -------
-    Copyright 2017 Hendra Anggrian
+    Copyright 2018 Hendra Anggrian
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

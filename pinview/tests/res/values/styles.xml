@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="pinViewStyle">@style/PinTheme</item>
+    </style>
+
+    <style name="PinTheme" parent="Widget.PinView">
+        <item name="pinCount">6</item>
+    </style>
+</resources>

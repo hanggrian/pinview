@@ -5,7 +5,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
     android("library")
-    dokka
+    kotlin("android")
     `bintray-release`
 }
 
@@ -47,6 +47,8 @@ dependencies {
     implementation(androidx("appcompat"))
 
     testImplementation(junit())
+    androidTestImplementation(kotlin("stdlib", VERSION_KOTLIN))
+    androidTestImplementation(kotlin("test", VERSION_KOTLIN))
     androidTestImplementation(material())
     androidTestImplementation(androidx("test.espresso", "espresso-core", VERSION_ESPRESSO))
     androidTestImplementation(androidx("test", "runner", VERSION_RUNNER))
@@ -74,11 +76,6 @@ tasks {
         classpath = ktlint
         main = "com.github.shyiko.ktlint.Main"
         args("--android", "-F", "src/**/*.kt")
-    }
-
-    withType<DokkaTask> {
-        outputDirectory = "$buildDir/docs"
-        doFirst { file(outputDirectory).deleteRecursively() }
     }
 }
 

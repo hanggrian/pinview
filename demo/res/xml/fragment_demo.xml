@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.preference.EditTextPreference
+        android:icon="@drawable/ic_count"
+        android:key="count"
+        android:title="Pin count" />
+
+    <androidx.preference.EditTextPreference
+        android:icon="@drawable/ic_gap"
+        android:key="gap"
+        android:title="Pin gaps" />
+</androidx.preference.PreferenceScreen>

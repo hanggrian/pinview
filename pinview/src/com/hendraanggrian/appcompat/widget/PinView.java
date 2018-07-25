@@ -9,7 +9,6 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.hendraanggrian.appcompat.pinview.R;
@@ -27,16 +26,18 @@ import androidx.core.widget.TextViewCompat;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-public class PinView extends FrameLayout implements TextWatcher, View.OnFocusChangeListener {
+public class PinView extends LinearLayout implements TextWatcher, View.OnFocusChangeListener {
 
-    private final LinearLayout pinGroup;
+    public static final int DEFAULT_COUNT = 4;
 
-    private OnCompleteListener onCompleteListener;
+    private OnStateChangedListener onStateChangedListener;
     private OnPinChangedListener onPinChangedListener;
 
     private int gap;
     private int focusedPin;
     private boolean isComplete;
+
+    private final int pinCount;
 
     public PinView(@NonNull Context context) {
         this(context, null);
@@ -48,20 +49,21 @@ public class PinView extends FrameLayout implements TextWatcher, View.OnFocusCha
 
     public PinView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        pinGroup = new LinearLayout(context);
-        pinGroup.setOrientation(LinearLayout.HORIZONTAL);
-        pinGroup.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        addView(pinGroup);
+        setOrientation(LinearLayout.HORIZONTAL);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PinView,
                 defStyleAttr, R.style.Widget_PinView);
-        for (int i = 0; i < a.getInt(R.styleable.PinView_pinCount, 0); i++) {
+        pinCount = a.getInt(R.styleable.PinView_pinCount, DEFAULT_COUNT);
+        for (int i = 0; i < pinCount; i++) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+            params.weight = 1;
+
             EditText view = new PinEditText(context);
-            view.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+            view.setLayoutParams(params);
             view.setOnFocusChangeListener(this);
-            pinGroup.addView(view);
+            addView(view);
         }
-        setGap(a.getDimensionPixelSize(R.styleable.PinView_pinGap, 0));
+        applyGap(a.getDimensionPixelSize(R.styleable.PinView_pinGap, 0));
         if (a.hasValue(R.styleable.PinView_android_text)) {
             setText(a.getText(R.styleable.PinView_android_text));
         }
@@ -78,18 +80,26 @@ public class PinView extends FrameLayout implements TextWatcher, View.OnFocusCha
     }
 
     @Override
+    public void onViewAdded(View child) {
+        super.onViewAdded(child);
+        if (getChildCount() > pinCount) {
+            throw new IllegalStateException("Shouldn't modify PinView children.");
+        }
+    }
+
+    @Override
     public void beforeTextChanged(CharSequence text, int i, int i1, int i2) {
     }
 
     @Override
     public void onTextChanged(CharSequence text, int i, int i1, int i2) {
-        if (onCompleteListener != null) {
+        if (onStateChangedListener != null) {
             if (isPinFilled() && !isComplete) {
                 isComplete = true;
-                onCompleteListener.onComplete(this, true);
+                onStateChangedListener.onComplete(this, true);
             } else if (!isPinFilled() && isComplete) {
                 isComplete = false;
-                onCompleteListener.onComplete(this, false);
+                onStateChangedListener.onComplete(this, false);
             }
         }
         if (onPinChangedListener != null) {
@@ -114,16 +124,8 @@ public class PinView extends FrameLayout implements TextWatcher, View.OnFocusCha
         }
     }
 
-    @Override
-    public void onViewAdded(View child) {
-        super.onViewAdded(child);
-        if (getChildCount() > 1) {
-            throw new IllegalStateException("Can't add child to PinView.");
-        }
-    }
-
-    public void setOnCompleteListener(OnCompleteListener listener) {
-        onCompleteListener = listener;
+    public void setOnStateChangedListener(OnStateChangedListener listener) {
+        onStateChangedListener = listener;
     }
 
     public void setOnPinChangedListener(OnPinChangedListener listener) {
@@ -132,10 +134,8 @@ public class PinView extends FrameLayout implements TextWatcher, View.OnFocusCha
 
     public void setGap(int gap) {
         this.gap = gap;
-        for (EditText view : getChilds()) {
-            ((MarginLayoutParams) view.getLayoutParams())
-                    .setMargins(gap / 2, 0, gap / 2, 0);
-        }
+        applyGap(gap);
+        onViewAdded(this);
     }
 
     public int getGap() {
@@ -156,7 +156,7 @@ public class PinView extends FrameLayout implements TextWatcher, View.OnFocusCha
             if (!Character.isDigit(pins[i])) {
                 throw new IllegalStateException("Text should be digits.");
             }
-            getChilds().get(i).setText(pins[i]);
+            getChilds().get(i).setText(String.valueOf(pins[i]));
         }
     }
 
@@ -232,7 +232,14 @@ public class PinView extends FrameLayout implements TextWatcher, View.OnFocusCha
         return views;
     }
 
-    public interface OnCompleteListener {
+    private void applyGap(int gap) {
+        for (EditText view : getChilds()) {
+            ((MarginLayoutParams) view.getLayoutParams())
+                    .setMargins(gap / 2, 0, gap / 2, 0);
+        }
+    }
+
+    public interface OnStateChangedListener {
 
         void onComplete(@NonNull PinView view, boolean isComplete);
     }
