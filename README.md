@@ -20,13 +20,13 @@ repositories {
 
 dependencies {
     compile "com.hendraanggrian.appcompat:pinview:$version"
-    compile "com.hendraanggrian.appcompat:socialview-suggestions:$version"
 }
 ```
 
 Usage
 -----
 Declare view in xml layout.
+
 ```xml
 <com.hendraanggrian.PinView
     android:id="@+id/pinView"
@@ -37,6 +37,7 @@ Declare view in xml layout.
 ```
 
 Then in java.
+
 ```java
 PinView view = (PinView) findViewById(R.id.pinView);
 CharSequence pin = view.getText();
