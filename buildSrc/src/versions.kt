@@ -11,9 +11,6 @@ const val VERSION_ESPRESSO = "3.1.0-alpha4"
 const val VERSION_RUNNER = "1.1.0-alpha4"
 const val VERSION_RULES = "1.1.0-alpha4"
 
-const val VERSION_PROCESS_PHOENIX = "2.0.0"
-const val VERSION_BUNDLER = "0.2"
-
 internal const val VERSION_TRUTH = "0.42"
 internal const val VERSION_JUNIT = "4.12"
 internal const val VERSION_GIT_PUBLISH = "0.3.3"

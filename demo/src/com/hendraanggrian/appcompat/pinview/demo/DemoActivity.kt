@@ -37,7 +37,10 @@ class DemoActivity : AppCompatActivity() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         pinView.setOnPinChangedListener(pinListener)
         pinView.setOnStateChangedListener(stateListener)
+
         stateListener.onStateChanged(pinView, false)
+        preferenceListener.onSharedPreferenceChanged(preferences, PREFERENCE_COUNT)
+        preferenceListener.onSharedPreferenceChanged(preferences, PREFERENCE_GAP)
     }
 
     override fun onResume() {

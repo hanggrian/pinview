@@ -49,8 +49,4 @@ dependencies {
     implementation(androidx("appcompat"))
     implementation(androidx("coordinatorlayout"))
     implementation(androidx("preference"))
-
-    implementation(jakeWharton("process-phoenix", VERSION_PROCESS_PHOENIX))
-    implementation(hendraanggrian("bundler", version = VERSION_BUNDLER))
-    kapt(hendraanggrian("bundler", "bundler-compiler", VERSION_BUNDLER))
 }

@@ -10,17 +10,6 @@ fun DependencyHandler.androidx(
     version: String = VERSION_ANDROIDX
 ): String = "androidx.$repository:$module:$version"
 
-fun DependencyHandler.hendraanggrian(
-    repository: String,
-    module: String = repository,
-    version: String
-): String = "com.hendraanggrian.$repository:$module:$version"
-
-fun DependencyHandler.jakeWharton(
-    module: String,
-    version: String
-): String = "com.jakewharton:$module:$version"
-
 fun DependencyHandler.material() = "com.google.android.material:material:$VERSION_ANDROIDX"
 
 fun DependencyHandler.junit() = "junit:junit:$VERSION_JUNIT"

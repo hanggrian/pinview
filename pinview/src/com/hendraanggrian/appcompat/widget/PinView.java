@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,8 +18,10 @@ import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import androidx.core.util.Consumer;
 import androidx.core.widget.TextViewCompat;
 
 public class PinView extends LinearLayout {
@@ -50,7 +51,7 @@ public class PinView extends LinearLayout {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (!TextUtils.isEmpty(s) && focusedPin < getChildCount() - 1) {
+            if (!TextUtils.isEmpty(s) && focusedPin < getCount() - 1) {
                 getPinAt(focusedPin + 1).requestFocus();
             } else if (TextUtils.isEmpty(s) && focusedPin > 0) {
                 getPinAt(focusedPin - 1).requestFocus();
@@ -82,17 +83,17 @@ public class PinView extends LinearLayout {
     }
 
     public PinView(
-        @NonNull Context context,
-        @Nullable AttributeSet attrs,
-        @AttrRes int defStyleAttr
+            @NonNull Context context,
+            @Nullable AttributeSet attrs,
+            @AttrRes int defStyleAttr
     ) {
         super(context, attrs, defStyleAttr);
 
         TypedArray a = context.obtainStyledAttributes(
-            attrs,
-            R.styleable.PinView,
-            defStyleAttr,
-            R.style.Widget_PinView
+                attrs,
+                R.styleable.PinView,
+                defStyleAttr,
+                R.style.Widget_PinView
         );
         setCount(a.getInt(R.styleable.PinView_pinCount, DEFAULT_COUNT));
         setGap(a.getDimensionPixelSize(R.styleable.PinView_pinGap, 0));
@@ -134,28 +135,13 @@ public class PinView extends LinearLayout {
         return (PinEditText) getChildAt(index);
     }
 
-    private void applyGap() {
-        if (pinGap > 0 && getChildCount() > 1) {
-            for (int i = 0; i < getChildCount(); i++) {
-                final MarginLayoutParams lp = (MarginLayoutParams) getChildAt(i).getLayoutParams();
-                final int gapStart = i == 0 ? 0 : pinGap / 2;
-                final int gapEnd = i == getChildCount() - 1 ? 0 : pinGap / 2;
-                if (Build.VERSION.SDK_INT >= 17) {
-                    lp.setMarginStart(gapStart);
-                    lp.setMarginEnd(gapEnd);
-                } else {
-                    lp.setMargins(gapStart, 0, gapEnd, 0);
-                }
-            }
-        }
-    }
-
     public void setCount(int count) {
-        if (getChildCount() > count) {
-            removeViews(count, getChildCount() - count);
-        } else if (getChildCount() < count) {
-            for (int i = 0; i < count - getChildCount(); i++) {
-                EditText view = new PinEditText(getContext());
+        final int diff = count - getCount();
+        if (diff < 0) {
+            removeViews(count, -diff);
+        } else if (diff > 0) {
+            for (int i = 0; i < diff; i++) {
+                TextView view = new PinEditText(getContext());
                 view.setOnFocusChangeListener(focusListener);
                 view.addTextChangedListener(textWatcher);
                 addView(view);
@@ -167,11 +153,12 @@ public class PinView extends LinearLayout {
         return getChildCount();
     }
 
-    public void setGap(int gap) {
+    public void setGap(@Px int gap) {
         pinGap = gap;
         applyGap();
     }
 
+    @Px
     public int getGap() {
         return pinGap;
     }
@@ -201,40 +188,62 @@ public class PinView extends LinearLayout {
     @NonNull
     public CharSequence getText() {
         final StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < getChildCount(); i++) {
-            builder.append(getPinAt(i).getText());
-        }
+        forEach(new Consumer<TextView>() {
+            @Override
+            public void accept(TextView textView) {
+                builder.append(textView.getText());
+            }
+        });
         return builder.toString();
     }
 
-    public void setTextAppearance(@StyleRes int res) {
-        for (int i = 0; i < getChildCount(); i++) {
-            TextViewCompat.setTextAppearance(getPinAt(i), res);
-        }
+    public void setTextAppearance(@StyleRes final int res) {
+        forEach(new Consumer<TextView>() {
+            @Override
+            public void accept(TextView textView) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    textView.setTextAppearance(res);
+                } else {
+                    TextViewCompat.setTextAppearance(textView, res);
+                }
+            }
+        });
     }
 
-    public void setTextColor(@ColorInt int color) {
-        for (int i = 0; i < getChildCount(); i++) {
-            getPinAt(i).setTextColor(color);
-        }
+    public void setTextColor(@ColorInt final int color) {
+        forEach(new Consumer<TextView>() {
+            @Override
+            public void accept(TextView textView) {
+                textView.setTextColor(color);
+            }
+        });
     }
 
-    public void setTextColor(@Nullable ColorStateList colors) {
-        for (int i = 0; i < getChildCount(); i++) {
-            getPinAt(i).setTextColor(colors);
-        }
+    public void setTextColor(@Nullable final ColorStateList colors) {
+        forEach(new Consumer<TextView>() {
+            @Override
+            public void accept(TextView textView) {
+                textView.setTextColor(colors);
+            }
+        });
     }
 
-    public void setTextSize(float size) {
-        for (int i = 0; i < getChildCount(); i++) {
-            getPinAt(i).setTextSize(size);
-        }
+    public void setTextSize(final float size) {
+        forEach(new Consumer<TextView>() {
+            @Override
+            public void accept(TextView textView) {
+                textView.setTextSize(size);
+            }
+        });
     }
 
-    public void setTextSize(int unit, float size) {
-        for (int i = 0; i < getChildCount(); i++) {
-            getPinAt(i).setTextSize(unit, size);
-        }
+    public void setTextSize(final int unit, final float size) {
+        forEach(new Consumer<TextView>() {
+            @Override
+            public void accept(TextView textView) {
+                textView.setTextSize(unit, size);
+            }
+        });
     }
 
     public void setOnPinChangedListener(@Nullable OnPinChangedListener listener) {
@@ -245,13 +254,35 @@ public class PinView extends LinearLayout {
         stateListener = listener;
     }
 
+    private void applyGap() {
+        if (pinGap > 0 && getCount() > 1) {
+            forEach(new Consumer<TextView>() {
+                @Override
+                public void accept(TextView textView) {
+                    ((MarginLayoutParams) textView.getLayoutParams()).setMargins(
+                            pinGap / 2,
+                            0,
+                            pinGap / 2,
+                            0
+                    );
+                }
+            });
+        }
+    }
+
     private boolean isPinFilled() {
-        for (int i = 0; i < getChildCount(); i++) {
+        for (int i = 0; i < getCount(); i++) {
             if (TextUtils.isEmpty(getPinAt(i).getText())) {
                 return false;
             }
         }
         return true;
+    }
+
+    private void forEach(Consumer<TextView> consumer) {
+        for (int i = 0; i < getCount(); i++) {
+            consumer.accept(getPinAt(i));
+        }
     }
 
     public interface OnPinChangedListener {
