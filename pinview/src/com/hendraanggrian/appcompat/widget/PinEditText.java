@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.widget.LinearLayout;
 
 import com.hendraanggrian.appcompat.pinview.R;
 
@@ -21,19 +22,28 @@ class PinEditText extends AppCompatEditText {
 
     PinEditText(Context context) {
         super(context, null, R.attr.editTextStyle);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        params.weight = 1;
+
+        setLayoutParams(params);
         setInputType(InputType.TYPE_CLASS_NUMBER);
         setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
         setGravity(Gravity.CENTER_HORIZONTAL);
-        gestureDetector = new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
-                if (!TextUtils.isEmpty(getText())) {
-                    setSelection(1);
-                    return true;
+
+        gestureDetector =
+            new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapConfirmed(MotionEvent e) {
+                    if (!TextUtils.isEmpty(getText())) {
+                        setSelection(1);
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
     }
 
     @Override

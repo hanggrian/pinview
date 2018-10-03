@@ -29,9 +29,7 @@ class DemoFragment : PreferenceFragmentCompat() {
         initial: P.() -> T?,
         convert: (T) -> CharSequence? = { it?.toString() }
     ) {
-        initial()?.let {
-            summary = convert(it)
-        }
+        initial()?.let { summary = convert(it) }
         onPreferenceChangeListener = OnPreferenceChangeListener { preference, newValue ->
             @Suppress("UNCHECKED_CAST")
             preference.summary = convert(newValue as T)

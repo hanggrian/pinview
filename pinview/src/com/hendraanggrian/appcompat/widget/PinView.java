@@ -3,6 +3,7 @@ package com.hendraanggrian.appcompat.widget;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -28,6 +29,7 @@ public class PinView extends LinearLayout {
 
     public static final int DEFAULT_COUNT = 4;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final TextWatcher textListener = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -58,9 +60,10 @@ public class PinView extends LinearLayout {
             }
         }
     };
+
+    @SuppressWarnings({"FieldCanBeLocal", "SuspiciousMethodCalls"})
     private final OnFocusChangeListener focusListener = new OnFocusChangeListener() {
         @Override
-        @SuppressWarnings("SuspiciousMethodCalls")
         public void onFocusChange(View view, boolean hasFocus) {
             if (hasFocus) {
                 focusedPin = getChilds().indexOf(view);
@@ -71,11 +74,9 @@ public class PinView extends LinearLayout {
     private OnStateChangedListener stateListener;
     private OnPinChangedListener pinListener;
 
-    private int gap;
+    private int pinGap;
     private int focusedPin;
     private boolean isComplete;
-
-    private final int pinCount;
 
     public PinView(@NonNull Context context) {
         this(context, null);
@@ -85,26 +86,21 @@ public class PinView extends LinearLayout {
         this(context, attrs, R.attr.pinViewStyle);
     }
 
-    public PinView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    public PinView(
+        @NonNull Context context,
+        @Nullable AttributeSet attrs,
+        @AttrRes int defStyleAttr
+    ) {
         super(context, attrs, defStyleAttr);
-        setOrientation(LinearLayout.HORIZONTAL);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PinView,
-                defStyleAttr, R.style.Widget_PinView);
-        pinCount = a.getInt(R.styleable.PinView_pinCount, DEFAULT_COUNT);
-        for (int i = 0; i < pinCount; i++) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LayoutParams.MATCH_PARENT,
-                    LayoutParams.MATCH_PARENT
-            );
-            params.weight = 1;
-
-            EditText view = new PinEditText(context);
-            view.setLayoutParams(params);
-            view.setOnFocusChangeListener(focusListener);
-            addView(view);
-        }
-        applyGap(a.getDimensionPixelSize(R.styleable.PinView_pinGap, 0));
+        TypedArray a = context.obtainStyledAttributes(
+            attrs,
+            R.styleable.PinView,
+            defStyleAttr,
+            R.style.Widget_PinView
+        );
+        setPinCount(a.getInt(R.styleable.PinView_pinCount, DEFAULT_COUNT));
+        setPinGap(a.getDimensionPixelSize(R.styleable.PinView_pinGap, 0));
         if (a.hasValue(R.styleable.PinView_android_text)) {
             setText(a.getText(R.styleable.PinView_android_text));
         }
@@ -121,10 +117,38 @@ public class PinView extends LinearLayout {
     }
 
     @Override
+    public void setOrientation(int orientation) {
+        if (orientation == LinearLayout.VERTICAL) {
+            throw new UnsupportedOperationException("Vertical pins are not yet supported");
+        }
+        super.setOrientation(orientation);
+    }
+
+    @Override
     public void onViewAdded(View child) {
         super.onViewAdded(child);
-        if (getChildCount() > pinCount) {
-            throw new IllegalStateException("Shouldn't modify PinView children.");
+        applyGap();
+    }
+
+    @Override
+    public void onViewRemoved(View child) {
+        super.onViewRemoved(child);
+        applyGap();
+    }
+
+    private void applyGap() {
+        if (pinGap > 0 && getChildCount() > 1) {
+            for (int i = 0; i < getChildCount(); i++) {
+                final MarginLayoutParams lp = (MarginLayoutParams) getChildAt(i).getLayoutParams();
+                final int gapStart = i == 0 ? 0 : pinGap / 2;
+                final int gapEnd = i == getChildCount() - 1 ? 0 : pinGap / 2;
+                if (Build.VERSION.SDK_INT >= 17) {
+                    lp.setMarginStart(gapStart);
+                    lp.setMarginEnd(gapEnd);
+                } else {
+                    lp.setMargins(gapStart, 0, gapEnd, 0);
+                }
+            }
         }
     }
 
@@ -136,14 +160,29 @@ public class PinView extends LinearLayout {
         pinListener = listener;
     }
 
-    public void setGap(int gap) {
-        this.gap = gap;
-        applyGap(gap);
-        onViewAdded(this);
+    public void setPinCount(int count) {
+        if (getPinCount() > count) {
+            removeViews(count, getPinCount() - count);
+        } else if (getPinCount() < count) {
+            for (int i = 0; i < count - getPinCount(); i++) {
+                EditText view = new PinEditText(getContext());
+                view.setOnFocusChangeListener(focusListener);
+                addView(view);
+            }
+        }
     }
 
-    public int getGap() {
-        return gap;
+    public int getPinCount() {
+        return getChildCount();
+    }
+
+    public void setPinGap(int gap) {
+        pinGap = gap;
+        applyGap();
+    }
+
+    public int getPinGap() {
+        return pinGap;
     }
 
     public boolean isComplete() {
@@ -234,13 +273,6 @@ public class PinView extends LinearLayout {
             views.add((EditText) getChildAt(i));
         }
         return views;
-    }
-
-    private void applyGap(int gap) {
-        for (EditText view : getChilds()) {
-            ((MarginLayoutParams) view.getLayoutParams())
-                    .setMargins(gap / 2, 0, gap / 2, 0);
-        }
     }
 
     public interface OnStateChangedListener {
