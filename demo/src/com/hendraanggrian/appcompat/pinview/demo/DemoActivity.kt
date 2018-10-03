@@ -14,7 +14,29 @@ import com.hendraanggrian.bundler.Extra
 import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.android.synthetic.main.activity_demo.*
 
-class DemoActivity : AppCompatActivity(), PinView.OnStateChangedListener, SharedPreferences.OnSharedPreferenceChangeListener {
+class DemoActivity : AppCompatActivity() {
+
+    private val stateListener = PinView.OnStateChangedListener { _, isComplete ->
+        toolbar.title = when {
+            isComplete -> "Complete"
+            else -> "Enter your pin"
+        }
+    }
+    private val preferenceListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { preferences, key ->
+            when (key) {
+                PREFERENCE_COUNT -> preferences.getString(key, null)?.let {
+                    ConfirmDialogFragment()
+                        .apply {
+                            arguments = Bundler.extrasOf(ConfirmDialogFragment::class.java, it)
+                        }
+                        .show(supportFragmentManager, null)
+                }
+                PREFERENCE_GAP -> preferences.getString(key, null)?.toInt()?.let {
+                    pinView.gap = it
+                }
+            }
+        }
 
     private lateinit var preferences: Preferences
 
@@ -27,44 +49,18 @@ class DemoActivity : AppCompatActivity(), PinView.OnStateChangedListener, Shared
             .replace(R.id.container, DemoFragment())
             .commitNow()
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        pinView.setOnStateChangedListener(this)
-        onComplete(pinView, false)
+        pinView.setOnStateChangedListener(stateListener)
+        stateListener.onStateChanged(pinView, false)
     }
 
     override fun onResume() {
         super.onResume()
-        preferences.registerOnSharedPreferenceChangeListener(this)
+        preferences.registerOnSharedPreferenceChangeListener(preferenceListener)
     }
 
     override fun onPause() {
         super.onPause()
-        preferences.unregisterOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onComplete(view: PinView, isComplete: Boolean) {
-        toolbar.title = when {
-            isComplete -> "Complete"
-            else -> "Enter your pin"
-        }
-    }
-
-    override fun onSharedPreferenceChanged(
-        preferences: SharedPreferences,
-        key: String
-    ) = preferences.run {
-        when (key) {
-            PREFERENCE_COUNT -> getString(key, null)?.let {
-                ConfirmDialogFragment()
-                    .apply {
-                        arguments = Bundler.extrasOf(ConfirmDialogFragment::class.java, it)
-                    }
-                    .show(supportFragmentManager, null)
-            }
-            PREFERENCE_GAP -> getString(key, null)?.toInt()?.let {
-                pinView.gap = it
-            }
-        }
-        Unit
+        preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener)
     }
 
     class ConfirmDialogFragment : AppCompatDialogFragment() {

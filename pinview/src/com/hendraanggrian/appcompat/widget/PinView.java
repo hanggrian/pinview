@@ -24,14 +24,52 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.widget.TextViewCompat;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-
-public class PinView extends LinearLayout implements TextWatcher, View.OnFocusChangeListener {
+public class PinView extends LinearLayout {
 
     public static final int DEFAULT_COUNT = 4;
 
-    private OnStateChangedListener onStateChangedListener;
-    private OnPinChangedListener onPinChangedListener;
+    private final TextWatcher textListener = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (stateListener != null) {
+                if (isPinFilled() && !isComplete) {
+                    isComplete = true;
+                    stateListener.onStateChanged(PinView.this, true);
+                } else if (!isPinFilled() && isComplete) {
+                    isComplete = false;
+                    stateListener.onStateChanged(PinView.this, false);
+                }
+            }
+            if (pinListener != null) {
+                pinListener.onPinChanged(PinView.this, getText());
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (!TextUtils.isEmpty(s) && focusedPin < getChilds().size() - 1) {
+                getChilds().get(focusedPin + 1).requestFocus();
+            } else if (TextUtils.isEmpty(s) && focusedPin > 0) {
+                getChilds().get(focusedPin - 1).requestFocus();
+            }
+        }
+    };
+    private final OnFocusChangeListener focusListener = new OnFocusChangeListener() {
+        @Override
+        @SuppressWarnings("SuspiciousMethodCalls")
+        public void onFocusChange(View view, boolean hasFocus) {
+            if (hasFocus) {
+                focusedPin = getChilds().indexOf(view);
+            }
+        }
+    };
+
+    private OnStateChangedListener stateListener;
+    private OnPinChangedListener pinListener;
 
     private int gap;
     private int focusedPin;
@@ -55,12 +93,15 @@ public class PinView extends LinearLayout implements TextWatcher, View.OnFocusCh
                 defStyleAttr, R.style.Widget_PinView);
         pinCount = a.getInt(R.styleable.PinView_pinCount, DEFAULT_COUNT);
         for (int i = 0; i < pinCount; i++) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT
+            );
             params.weight = 1;
 
             EditText view = new PinEditText(context);
             view.setLayoutParams(params);
-            view.setOnFocusChangeListener(this);
+            view.setOnFocusChangeListener(focusListener);
             addView(view);
         }
         applyGap(a.getDimensionPixelSize(R.styleable.PinView_pinGap, 0));
@@ -74,7 +115,7 @@ public class PinView extends LinearLayout implements TextWatcher, View.OnFocusCh
         if (a.hasValue(R.styleable.PinView_android_textSize)) {
             setTextSize(a.getDimension(R.styleable.PinView_android_textSize, 0f));
         }
-        addTextChangedListener(this);
+        addTextChangedListener(textListener);
 
         a.recycle();
     }
@@ -87,49 +128,12 @@ public class PinView extends LinearLayout implements TextWatcher, View.OnFocusCh
         }
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence text, int i, int i1, int i2) {
-    }
-
-    @Override
-    public void onTextChanged(CharSequence text, int i, int i1, int i2) {
-        if (onStateChangedListener != null) {
-            if (isPinFilled() && !isComplete) {
-                isComplete = true;
-                onStateChangedListener.onComplete(this, true);
-            } else if (!isPinFilled() && isComplete) {
-                isComplete = false;
-                onStateChangedListener.onComplete(this, false);
-            }
-        }
-        if (onPinChangedListener != null) {
-            onPinChangedListener.onPinChanged(this, getText());
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable text) {
-        if (!TextUtils.isEmpty(text) && focusedPin < getChilds().size() - 1) {
-            getChilds().get(focusedPin + 1).requestFocus();
-        } else if (TextUtils.isEmpty(text) && focusedPin > 0) {
-            getChilds().get(focusedPin - 1).requestFocus();
-        }
-    }
-
-    @Override
-    @SuppressWarnings("SuspiciousMethodCalls")
-    public void onFocusChange(View view, boolean hasFocus) {
-        if (hasFocus) {
-            focusedPin = getChilds().indexOf(view);
-        }
-    }
-
     public void setOnStateChangedListener(OnStateChangedListener listener) {
-        onStateChangedListener = listener;
+        stateListener = listener;
     }
 
     public void setOnPinChangedListener(OnPinChangedListener listener) {
-        onPinChangedListener = listener;
+        pinListener = listener;
     }
 
     public void setGap(int gap) {
@@ -241,11 +245,11 @@ public class PinView extends LinearLayout implements TextWatcher, View.OnFocusCh
 
     public interface OnStateChangedListener {
 
-        void onComplete(@NonNull PinView view, boolean isComplete);
+        void onStateChanged(@NonNull PinView view, boolean isComplete);
     }
 
     public interface OnPinChangedListener {
 
-        void onPinChanged(@NonNull PinView view, @NonNull CharSequence text);
+        void onPinChanged(@NonNull PinView view, @NonNull CharSequence s);
     }
 }

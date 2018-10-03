@@ -28,7 +28,7 @@ Usage
 Declare view in xml layout.
 
 ```xml
-<com.hendraanggrian.PinView
+<com.hendraanggrian.appcompat.widget.PinView
     android:id="@+id/pinView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -43,13 +43,13 @@ PinView view = (PinView) findViewById(R.id.pinView);
 CharSequence pin = view.getText();
 
 // set listener
-view.setOnStateChangedListener(new OnStateChangedListener() {
+view.setOnStateChangedListener(new PinView.OnStateChangedListener() {
     @Override
     public void onStateChanged(@NonNull PinEditText view, boolean isComplete) {
         // do something
     }
 });
-view.setOnPinChangedListener(new OnPinChangedListener() {
+view.setOnPinChangedListener(new PinView.OnPinChangedListener() {
     @Override
     public void onStateChanged(@NonNull PinEditText view, @NonNull String... mPins) {
         // do something
