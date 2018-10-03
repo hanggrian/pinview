@@ -33,8 +33,8 @@ class PinEditText extends AppCompatEditText {
         setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
         setGravity(Gravity.CENTER_HORIZONTAL);
 
-        gestureDetector =
-            new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
+        GestureDetector.SimpleOnGestureListener gestureListener =
+            new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onSingleTapConfirmed(MotionEvent e) {
                     if (!TextUtils.isEmpty(getText())) {
@@ -43,7 +43,8 @@ class PinEditText extends AppCompatEditText {
                     }
                     return false;
                 }
-            });
+            };
+        gestureDetector = new GestureDetectorCompat(context, gestureListener);
     }
 
     @Override

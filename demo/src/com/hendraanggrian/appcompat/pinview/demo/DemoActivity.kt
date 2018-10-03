@@ -2,6 +2,7 @@ package com.hendraanggrian.appcompat.pinview.demo
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.hendraanggrian.appcompat.widget.PinView
@@ -9,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_demo.*
 
 class DemoActivity : AppCompatActivity() {
 
+    private val pinListener = PinView.OnPinChangedListener { _, s -> Log.d("pins", s.toString()) }
     private val stateListener = PinView.OnStateChangedListener { _, isComplete ->
         toolbar.title = when {
             isComplete -> "Complete"
@@ -17,8 +19,8 @@ class DemoActivity : AppCompatActivity() {
     }
     private val preferenceListener = SharedPreferences.OnSharedPreferenceChangeListener { p, key ->
         when (key) {
-            PREFERENCE_COUNT -> p.getString(key, null)?.toInt()?.let { pinView.pinCount = it }
-            PREFERENCE_GAP -> p.getString(key, null)?.toInt()?.let { pinView.pinGap = it }
+            PREFERENCE_COUNT -> p.getString(key, null)?.toInt()?.let { pinView.count = it }
+            PREFERENCE_GAP -> p.getString(key, null)?.toInt()?.let { pinView.gap = it }
         }
     }
 
@@ -33,6 +35,7 @@ class DemoActivity : AppCompatActivity() {
             .replace(R.id.container, DemoFragment())
             .commitNow()
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        pinView.setOnPinChangedListener(pinListener)
         pinView.setOnStateChangedListener(stateListener)
         stateListener.onStateChanged(pinView, false)
     }

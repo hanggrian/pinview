@@ -11,11 +11,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.hendraanggrian.appcompat.pinview.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
@@ -29,8 +27,7 @@ public class PinView extends LinearLayout {
 
     public static final int DEFAULT_COUNT = 4;
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private final TextWatcher textListener = new TextWatcher() {
+    private final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -53,26 +50,24 @@ public class PinView extends LinearLayout {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (!TextUtils.isEmpty(s) && focusedPin < getChilds().size() - 1) {
-                getChilds().get(focusedPin + 1).requestFocus();
+            if (!TextUtils.isEmpty(s) && focusedPin < getChildCount() - 1) {
+                getPinAt(focusedPin + 1).requestFocus();
             } else if (TextUtils.isEmpty(s) && focusedPin > 0) {
-                getChilds().get(focusedPin - 1).requestFocus();
+                getPinAt(focusedPin - 1).requestFocus();
             }
         }
     };
-
-    @SuppressWarnings({"FieldCanBeLocal", "SuspiciousMethodCalls"})
     private final OnFocusChangeListener focusListener = new OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
             if (hasFocus) {
-                focusedPin = getChilds().indexOf(view);
+                focusedPin = indexOfChild(view);
             }
         }
     };
 
-    private OnStateChangedListener stateListener;
     private OnPinChangedListener pinListener;
+    private OnStateChangedListener stateListener;
 
     private int pinGap;
     private int focusedPin;
@@ -99,8 +94,8 @@ public class PinView extends LinearLayout {
             defStyleAttr,
             R.style.Widget_PinView
         );
-        setPinCount(a.getInt(R.styleable.PinView_pinCount, DEFAULT_COUNT));
-        setPinGap(a.getDimensionPixelSize(R.styleable.PinView_pinGap, 0));
+        setCount(a.getInt(R.styleable.PinView_pinCount, DEFAULT_COUNT));
+        setGap(a.getDimensionPixelSize(R.styleable.PinView_pinGap, 0));
         if (a.hasValue(R.styleable.PinView_android_text)) {
             setText(a.getText(R.styleable.PinView_android_text));
         }
@@ -111,8 +106,6 @@ public class PinView extends LinearLayout {
         if (a.hasValue(R.styleable.PinView_android_textSize)) {
             setTextSize(a.getDimension(R.styleable.PinView_android_textSize, 0f));
         }
-        addTextChangedListener(textListener);
-
         a.recycle();
     }
 
@@ -136,6 +129,11 @@ public class PinView extends LinearLayout {
         applyGap();
     }
 
+    @NonNull
+    public TextView getPinAt(int index) {
+        return (PinEditText) getChildAt(index);
+    }
+
     private void applyGap() {
         if (pinGap > 0 && getChildCount() > 1) {
             for (int i = 0; i < getChildCount(); i++) {
@@ -152,36 +150,29 @@ public class PinView extends LinearLayout {
         }
     }
 
-    public void setOnStateChangedListener(OnStateChangedListener listener) {
-        stateListener = listener;
-    }
-
-    public void setOnPinChangedListener(OnPinChangedListener listener) {
-        pinListener = listener;
-    }
-
-    public void setPinCount(int count) {
-        if (getPinCount() > count) {
-            removeViews(count, getPinCount() - count);
-        } else if (getPinCount() < count) {
-            for (int i = 0; i < count - getPinCount(); i++) {
+    public void setCount(int count) {
+        if (getChildCount() > count) {
+            removeViews(count, getChildCount() - count);
+        } else if (getChildCount() < count) {
+            for (int i = 0; i < count - getChildCount(); i++) {
                 EditText view = new PinEditText(getContext());
                 view.setOnFocusChangeListener(focusListener);
+                view.addTextChangedListener(textWatcher);
                 addView(view);
             }
         }
     }
 
-    public int getPinCount() {
+    public int getCount() {
         return getChildCount();
     }
 
-    public void setPinGap(int gap) {
+    public void setGap(int gap) {
         pinGap = gap;
         applyGap();
     }
 
-    public int getPinGap() {
+    public int getGap() {
         return pinGap;
     }
 
@@ -190,16 +181,16 @@ public class PinView extends LinearLayout {
     }
 
     public void setSelection(int index) {
-        getChilds().get(index).requestFocus();
+        getPinAt(index).requestFocus();
     }
 
     public void setText(@NonNull CharSequence text) {
         final char[] pins = text.toString().toCharArray();
         for (int i = 0; i < pins.length; i++) {
             if (!Character.isDigit(pins[i])) {
-                throw new IllegalStateException("Text should be digits.");
+                throw new IllegalStateException("Text should be digits");
             }
-            getChilds().get(i).setText(String.valueOf(pins[i]));
+            getPinAt(i).setText(String.valueOf(pins[i]));
         }
     }
 
@@ -210,78 +201,66 @@ public class PinView extends LinearLayout {
     @NonNull
     public CharSequence getText() {
         final StringBuilder builder = new StringBuilder();
-        for (EditText view : getChilds()) {
-            builder.append(view.getText());
+        for (int i = 0; i < getChildCount(); i++) {
+            builder.append(getPinAt(i).getText());
         }
         return builder.toString();
     }
 
     public void setTextAppearance(@StyleRes int res) {
-        for (EditText view : getChilds()) {
-            TextViewCompat.setTextAppearance(view, res);
+        for (int i = 0; i < getChildCount(); i++) {
+            TextViewCompat.setTextAppearance(getPinAt(i), res);
         }
     }
 
     public void setTextColor(@ColorInt int color) {
-        for (EditText view : getChilds()) {
-            view.setTextColor(color);
+        for (int i = 0; i < getChildCount(); i++) {
+            getPinAt(i).setTextColor(color);
         }
     }
 
-    public void setTextColor(ColorStateList colors) {
-        for (EditText view : getChilds()) {
-            view.setTextColor(colors);
+    public void setTextColor(@Nullable ColorStateList colors) {
+        for (int i = 0; i < getChildCount(); i++) {
+            getPinAt(i).setTextColor(colors);
         }
     }
 
     public void setTextSize(float size) {
-        for (EditText view : getChilds()) {
-            view.setTextSize(size);
+        for (int i = 0; i < getChildCount(); i++) {
+            getPinAt(i).setTextSize(size);
         }
     }
 
     public void setTextSize(int unit, float size) {
-        for (EditText view : getChilds()) {
-            view.setTextSize(unit, size);
+        for (int i = 0; i < getChildCount(); i++) {
+            getPinAt(i).setTextSize(unit, size);
         }
     }
 
-    public void addTextChangedListener(@Nullable TextWatcher watcher) {
-        for (EditText view : getChilds()) {
-            view.addTextChangedListener(watcher);
-        }
+    public void setOnPinChangedListener(@Nullable OnPinChangedListener listener) {
+        pinListener = listener;
     }
 
-    public void removeTextChangedListener(@Nullable TextWatcher watcher) {
-        for (EditText view : getChilds()) {
-            view.removeTextChangedListener(watcher);
-        }
+    public void setOnStateChangedListener(@Nullable OnStateChangedListener listener) {
+        stateListener = listener;
     }
 
     private boolean isPinFilled() {
-        for (EditText view : getChilds()) {
-            if (TextUtils.isEmpty(view.getText())) {
+        for (int i = 0; i < getChildCount(); i++) {
+            if (TextUtils.isEmpty(getPinAt(i).getText())) {
                 return false;
             }
         }
         return true;
     }
 
-    private List<EditText> getChilds() {
-        final List<EditText> views = new ArrayList<>();
-        for (int i = 0; i < getChildCount(); i++) {
-            views.add((EditText) getChildAt(i));
-        }
-        return views;
+    public interface OnPinChangedListener {
+
+        void onPinChanged(@NonNull PinView view, @NonNull CharSequence s);
     }
 
     public interface OnStateChangedListener {
 
         void onStateChanged(@NonNull PinView view, boolean isComplete);
-    }
-
-    public interface OnPinChangedListener {
-
-        void onPinChanged(@NonNull PinView view, @NonNull CharSequence s);
     }
 }
