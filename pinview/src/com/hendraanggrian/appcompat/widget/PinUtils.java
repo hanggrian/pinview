@@ -11,7 +11,7 @@ import java.util.Map;
 
 import androidx.core.widget.TextViewCompat;
 
-class PinUtils {
+final class PinUtils {
 
     private static final ThreadLocal<Map<String, Constructor<PinView>>> sConstructors = new ThreadLocal<>();
     private static final Class<?>[] CONSTRUCTOR_PARAMS = new Class<?>[]{Context.class};
