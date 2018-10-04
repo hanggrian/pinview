@@ -12,7 +12,7 @@ sealed class TestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
         setSupportActionBar(findViewById(R.id.toolbar))
-        findViewById<PinGroup>(R.id.pinView).setOnStateChangedListener { _, isComplete ->
+        findViewById<PinGroup>(R.id.pinGroup).setOnStateChangedListener { _, isComplete ->
             findViewById<TextView>(R.id.textView).text = when {
                 isComplete -> "Complete"
                 else -> "Unfinished"

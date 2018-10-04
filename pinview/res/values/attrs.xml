@@ -5,6 +5,7 @@
     </declare-styleable>
 
     <declare-styleable name="PinGroup">
+        <attr name="pinView" format="string" />
         <attr name="pinCount" format="integer" />
         <attr name="pinGap" format="dimension" />
 

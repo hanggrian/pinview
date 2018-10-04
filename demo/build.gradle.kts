@@ -49,4 +49,6 @@ dependencies {
     implementation(androidx("appcompat"))
     implementation(androidx("coordinatorlayout"))
     implementation(androidx("preference"))
+
+    implementation(jakeWharton("process-phoenix", VERSION_PROCESS_PHOENIX))
 }

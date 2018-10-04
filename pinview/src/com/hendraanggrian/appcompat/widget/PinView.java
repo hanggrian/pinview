@@ -15,15 +15,21 @@ import android.widget.LinearLayout;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.view.GestureDetectorCompat;
 
-class PinView extends AppCompatEditText {
+/**
+ * View that represent single pin input. To modify, extend this view and use it in xml
+ * (e.g.: {@code app:pinView="com.example.CustomPinView"}).
+ *
+ * @see PinGroup
+ */
+public class PinView extends AppCompatEditText {
 
     private final GestureDetectorCompat gestureDetector;
 
-    PinView(Context context) {
+    public PinView(Context context) {
         super(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
         );
         params.weight = 1;
 
@@ -33,16 +39,16 @@ class PinView extends AppCompatEditText {
         setGravity(Gravity.CENTER_HORIZONTAL);
 
         GestureDetector.SimpleOnGestureListener gestureListener =
-            new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapConfirmed(MotionEvent e) {
-                    if (!TextUtils.isEmpty(getText())) {
-                        setSelection(1);
-                        return true;
+                new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onSingleTapConfirmed(MotionEvent e) {
+                        if (!TextUtils.isEmpty(getText())) {
+                            setSelection(1);
+                            return true;
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            };
+                };
         gestureDetector = new GestureDetectorCompat(context, gestureListener);
     }
 

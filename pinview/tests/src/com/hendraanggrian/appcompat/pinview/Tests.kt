@@ -21,7 +21,7 @@ sealed class AbstractTest {
     abstract val text: String
 
     @Test fun setText() {
-        onView(withId(R.id.pinView))
+        onView(withId(R.id.pinGroup))
             .perform(object : ViewAction {
                 override fun getDescription(): String = "set text"
                 override fun getConstraints(): Matcher<View> = isAssignableFrom(PinGroup::class.java)

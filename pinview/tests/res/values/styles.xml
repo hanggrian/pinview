@@ -2,7 +2,7 @@
 <resources>
 
     <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="pinViewStyle">@style/PinTheme</item>
+        <item name="pinGroupStyle">@style/PinTheme</item>
     </style>
 
     <style name="PinTheme" parent="Widget.PinGroup">

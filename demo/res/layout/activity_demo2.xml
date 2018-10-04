@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".DemoActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -11,7 +13,9 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize" />
+            android:layout_height="?actionBarSize"
+            app:title="Enter your pin"
+            app:titleTextColor="?colorAccent" />
 
         <com.hendraanggrian.appcompat.widget.PinGroup
             android:id="@+id/pinGroup"
@@ -22,13 +26,14 @@
             android:paddingTop="32dp"
             android:paddingEnd="16dp"
             android:paddingRight="16dp"
-            android:paddingBottom="32dp" />
+            android:paddingBottom="32dp"
+            app:pinView="com.hendraanggrian.appcompat.pinview.demo.CustomPinView" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/textView"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
-</LinearLayout>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:ignore="PrivateResource" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,6 +2,7 @@
 <resources>
 
     <style name="Widget.PinGroup" parent="android:Widget">
+        <item name="pinView">com.hendraanggrian.appcompat.widget.PinView</item>
         <item name="pinGap">8dp</item>
 
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>

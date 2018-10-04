@@ -71,6 +71,7 @@ public class PinGroup extends LinearLayout {
             }
         }
     };
+    private final Function<Context, PinView> pinViewProvider;
 
     private OnPinChangedListener pinListener;
     private OnStateChangedListener stateListener;
@@ -91,26 +92,25 @@ public class PinGroup extends LinearLayout {
     }
 
     public PinGroup(
-        @NonNull Context context,
-        @Nullable AttributeSet attrs,
-        @AttrRes int defStyleAttr
+            @NonNull Context context,
+            @Nullable AttributeSet attrs,
+            @AttrRes int defStyleAttr
     ) {
         super(context, attrs, defStyleAttr);
-        setBackgroundResource(PinUtils.getDrawable(context, R.attr.selectableItemBackground));
-        setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                setText("");
-                return false;
-            }
-        });
 
         TypedArray a = context.obtainStyledAttributes(
-            attrs,
-            R.styleable.PinGroup,
-            defStyleAttr,
-            R.style.Widget_PinGroup
+                attrs,
+                R.styleable.PinGroup,
+                defStyleAttr,
+                R.style.Widget_PinGroup
         );
+        final String pinViewClass = a.getString(R.styleable.PinGroup_pinView);
+        pinViewProvider = new Function<Context, PinView>() {
+            @Override
+            public PinView apply(Context input) {
+                return PinUtils.parsePinView(input, pinViewClass);
+            }
+        };
         setCount(a.getInt(R.styleable.PinGroup_pinCount, DEFAULT_COUNT));
         setGap(a.getDimensionPixelSize(R.styleable.PinGroup_pinGap, 0));
         if (a.hasValue(R.styleable.PinGroup_android_text)) {
@@ -129,8 +129,8 @@ public class PinGroup extends LinearLayout {
     @Override
     public void setOrientation(int orientation) {
         Preconditions.checkArgument(
-            orientation == LinearLayout.HORIZONTAL,
-            "Vertical pins are not yet supported"
+                orientation == LinearLayout.HORIZONTAL,
+                "Vertical pins are not yet supported"
         );
         super.setOrientation(orientation);
     }
@@ -159,7 +159,7 @@ public class PinGroup extends LinearLayout {
             removeViews(count, -diff);
         } else if (diff > 0) {
             for (int i = 0; i < diff; i++) {
-                TextView view = new PinView(getContext());
+                TextView view = pinViewProvider.apply(getContext());
                 view.setOnFocusChangeListener(focusListener);
                 view.addTextChangedListener(textWatcher);
                 if (textAppearance != 0) {
@@ -258,8 +258,8 @@ public class PinGroup extends LinearLayout {
             public void accept(Pair<TextView, Integer> pair) {
                 if (pair.second < pins.length) {
                     Preconditions.checkArgument(
-                        Character.isDigit(pins[pair.second]),
-                        "Text should be digits"
+                            Character.isDigit(pins[pair.second]),
+                            "Text should be digits"
                     );
                     pair.first.setText(String.valueOf(pins[pair.second]));
                 } else {
@@ -401,10 +401,10 @@ public class PinGroup extends LinearLayout {
                 @Override
                 public void accept(TextView view) {
                     ((MarginLayoutParams) view.getLayoutParams()).setMargins(
-                        pinGap / 2,
-                        0,
-                        pinGap / 2,
-                        0
+                            pinGap / 2,
+                            0,
+                            pinGap / 2,
+                            0
                     );
                 }
             });
@@ -424,9 +424,9 @@ public class PinGroup extends LinearLayout {
     }
 
     private <V> V map(
-        Function<TextView, Boolean> argument,
-        Function<TextView, V> value,
-        V defaultValue
+            Function<TextView, Boolean> argument,
+            Function<TextView, V> value,
+            V defaultValue
     ) {
         for (int i = 0; i < getCount(); i++) {
             final TextView view = (TextView) getChildAt(i);

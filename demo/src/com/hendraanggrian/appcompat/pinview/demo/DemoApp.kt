@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.hendraanggrian.appcompat.widget.PinGroup
 
+@Suppress("unused")
 class DemoApp : Application() {
 
     override fun onCreate() {

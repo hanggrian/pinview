@@ -10,6 +10,7 @@ class DemoFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.fragment_demo)
+        find<EditTextPreference>(PREFERENCE_TEXT).bindSummary({ text })
         find<EditTextPreference>(PREFERENCE_COUNT).bindSummary({ text })
         find<EditTextPreference>(PREFERENCE_GAP).bindSummary({ text })
     }
