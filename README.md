@@ -5,7 +5,7 @@ PinView
 [![build](https://travis-ci.com/hendraanggrian/pinview.svg)](https://travis-ci.com/hendraanggrian/pinview)
 [![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-Android customizable PIN input view.
+Android customizable pin input view.
 
 ![demo1][demo1]
 ![demo2][demo2]

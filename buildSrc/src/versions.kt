@@ -15,4 +15,5 @@ const val VERSION_PROCESS_PHOENIX = "2.0.0"
 
 internal const val VERSION_TRUTH = "0.42"
 internal const val VERSION_JUNIT = "4.12"
+internal const val VERSION_BINTRAY = "1.8.4"
 internal const val VERSION_BINTRAY_RELEASE = "0.8.1"
