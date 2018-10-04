@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<lint>
+    <!-- Knowingly use hidden components of androidx.core -->
+    <issue id="RestrictedApi" severity="ignore" />
+</lint>

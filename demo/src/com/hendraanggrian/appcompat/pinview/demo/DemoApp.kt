@@ -3,7 +3,7 @@ package com.hendraanggrian.appcompat.pinview.demo
 import android.app.Application
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.hendraanggrian.appcompat.widget.PinView
+import com.hendraanggrian.appcompat.widget.PinGroup
 
 class DemoApp : Application() {
 
@@ -12,7 +12,7 @@ class DemoApp : Application() {
         PreferenceManager.getDefaultSharedPreferences(this).run {
             if (!contains(PREFERENCE_COUNT)) {
                 edit {
-                    putString(PREFERENCE_COUNT, PinView.DEFAULT_COUNT.toString())
+                    putString(PREFERENCE_COUNT, PinGroup.DEFAULT_COUNT.toString())
                 }
             }
         }

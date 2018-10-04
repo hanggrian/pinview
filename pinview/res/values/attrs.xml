@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="PinViewStyle">
-        <attr name="pinViewStyle" format="reference" />
+    <declare-styleable name="PinGroupStyle">
+        <attr name="pinGroupStyle" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="PinView">
+    <declare-styleable name="PinGroup">
         <attr name="pinCount" format="integer" />
         <attr name="pinGap" format="dimension" />
 

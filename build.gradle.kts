@@ -16,9 +16,6 @@ allprojects {
         google()
         jcenter()
     }
-    tasks.withType<Javadoc> {
-        isEnabled = false
-    }
 }
 
 tasks {

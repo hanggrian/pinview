@@ -17,8 +17,8 @@
             app:title="Enter your pin"
             app:titleTextColor="?colorAccent" />
 
-        <com.hendraanggrian.appcompat.widget.PinView
-            android:id="@+id/pinView"
+        <com.hendraanggrian.appcompat.widget.PinGroup
+            android:id="@+id/pinGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="16dp"

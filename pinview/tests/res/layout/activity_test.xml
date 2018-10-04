@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize" />
 
-        <com.hendraanggrian.appcompat.widget.PinView
+        <com.hendraanggrian.appcompat.widget.PinGroup
             android:id="@+id/pinView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

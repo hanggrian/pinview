@@ -6,7 +6,7 @@ const val SDK_TARGET = 28
 const val BUILD_TOOLS = "28.0.1"
 
 internal const val VERSION_ANDROID_PLUGIN = "3.1.4"
-const val VERSION_ANDROIDX = "1.0.0-rc02"
+const val VERSION_ANDROIDX = "1.0.0"
 const val VERSION_ESPRESSO = "3.1.0-alpha4"
 const val VERSION_RUNNER = "1.1.0-alpha4"
 const val VERSION_RULES = "1.1.0-alpha4"

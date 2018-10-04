@@ -9,7 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.hendraanggrian.appcompat.pinview.test.R
-import com.hendraanggrian.appcompat.widget.PinView
+import com.hendraanggrian.appcompat.widget.PinGroup
 import org.hamcrest.Matcher
 import org.junit.Rule
 import org.junit.Test
@@ -24,9 +24,9 @@ sealed class AbstractTest {
         onView(withId(R.id.pinView))
             .perform(object : ViewAction {
                 override fun getDescription(): String = "set text"
-                override fun getConstraints(): Matcher<View> = isAssignableFrom(PinView::class.java)
+                override fun getConstraints(): Matcher<View> = isAssignableFrom(PinGroup::class.java)
                 override fun perform(uiController: UiController?, view: View) {
-                    view as PinView
+                    view as PinGroup
                     view.text = text
                     assertEquals(view.text, text)
                 }
