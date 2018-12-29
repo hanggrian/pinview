@@ -19,10 +19,10 @@ allprojects {
 }
 
 tasks {
-    "clean"(Delete::class) {
+    register<Delete>("clean") {
         delete(buildDir)
     }
-    "wrapper"(Wrapper::class) {
+    named<Wrapper>("wrapper") {
         gradleVersion = VERSION_GRADLE
     }
 }
