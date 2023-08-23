@@ -1,8 +1,16 @@
+# macOS
+**/.DS_Store
+
+# Gradle
+.gradle/
+build/
+local.properties
+
+# IDEA
 *.iml
-.gradle
-/local.properties
-/.idea
-.DS_Store
-/build
-/captures
-.externalNativeBuild
+.idea/
+out/
+
+# Android
+captures/
+.externalNativeBuild/

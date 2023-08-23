@@ -1,2 +1,14 @@
-include(RELEASE_ARTIFACT)
-include("demo")
+pluginManagement.repositories {
+    gradlePluginPortal()
+    mavenCentral()
+    google()
+}
+dependencyResolutionManagement.repositories {
+    mavenCentral()
+    google()
+}
+
+rootProject.name = "pinview"
+
+include("pinview")
+include("sample")

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.example.pinview">
+
+  <application
+    android:name="androidx.multidex.MultiDexApplication"
+    android:allowBackup="true"
+    android:label="PinView Sample"
+    android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+    <activity
+      android:name="com.example.pinview.MainActivity"
+      android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>

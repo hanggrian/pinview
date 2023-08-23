@@ -1,5 +1,7 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <lint>
-    <!-- Knowingly use hidden components of androidx.core -->
-    <issue id="RestrictedApi" severity="ignore" />
+  <!-- Knowingly use hidden components of androidx.core -->
+  <issue id="RestrictedApi" severity="ignore"/>
+  <!-- PinEditText gesture -->
+  <issue id="ClickableViewAccessibility" severity="ignore"/>
 </lint>

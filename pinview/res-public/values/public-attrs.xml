@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <public name="pinGroupStyle" type="attr" />
-
-    <public name="count" type="attr" />
-    <public name="pinGap" type="attr" />
-</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="pinViewStyle">@style/PinTheme</item>
+  </style>
+
+  <style name="PinTheme" parent="Widget.PinView">
+    <item name="pinGap">0dp</item>
+  </style>
+</resources>
