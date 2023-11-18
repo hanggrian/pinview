@@ -3,8 +3,8 @@ jdk = "17" # min for android
 kotlin = "1.8.20"
 checkstyle = "8.45.1"
 sdk-min = "14"
-sdk-target = "33"
-android-plugin = "8.1.0"
+sdk-target = "34"
+android-plugin = "8.1.4"
 androidx = "1.6.0"
 androidx-test = "1.5.0"
 
@@ -18,7 +18,7 @@ pages = "com.hendraanggrian.pages:0.1"
 [libraries]
 # lint
 checkstyle = { module = "com.puppycrawl.tools:checkstyle", version.ref = "checkstyle" }
-rulebook-checkstyle = "com.hendraanggrian.rulebook:rulebook-checkstyle:0.3"
+rulebook-checkstyle = "com.hendraanggrian.rulebook:rulebook-checkstyle:0.4"
 # main
 kotlinx-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 material = { module = "com.google.android.material:material", version.ref = "androidx" }

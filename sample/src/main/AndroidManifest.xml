@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.example.pinview">
-
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <application
     android:name="androidx.multidex.MultiDexApplication"
     android:allowBackup="true"
     android:label="PinView Sample"
     android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
     <activity
-      android:name="com.example.pinview.MainActivity"
+      android:name=".MainActivity"
       android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

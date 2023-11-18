@@ -1,4 +1,4 @@
-package com.example.pinview
+package com.example
 
 import android.os.Bundle
 import androidx.preference.EditTextPreference

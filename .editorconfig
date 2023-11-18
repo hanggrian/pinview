@@ -11,11 +11,10 @@ insert_final_newline = true
 [*.md]
 max_line_length = 80
 
-[*.java]
-ij_java_continuation_indent_size = 4
-
 [*.{kt,kts}]
 indent_size = 4
 max_line_length = 100
-ij_kotlin_allow_trailing_comma = false
-ij_kotlin_allow_trailing_comma_on_call_site = false
+
+[*.java]
+continuation_indent_size = 4
+max_line_length = 100

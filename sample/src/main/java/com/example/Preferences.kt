@@ -1,4 +1,4 @@
-package com.example.pinview
+package com.example
 
 typealias Preferences = android.content.SharedPreferences
 

@@ -1,4 +1,4 @@
-val RELEASE_ARTIFACT: String by project
+val releaseArtifact: String by project
 
 plugins {
     alias(libs.plugins.android.application)
@@ -8,18 +8,18 @@ plugins {
 kotlin.jvmToolchain(libs.versions.jdk.get().toInt())
 
 android {
-    kotlinOptions.jvmTarget = JavaVersion.toVersion(libs.versions.jdk.get()).toString()
-    namespace = "com.example.$RELEASE_ARTIFACT"
+    namespace = "com.example"
     testNamespace = "$namespace.test"
     defaultConfig {
         applicationId = namespace
         multiDexEnabled = true
     }
     lint.abortOnError = false
+    kotlinOptions.jvmTarget = JavaVersion.toVersion(libs.versions.jdk.get()).toString()
 }
 
 dependencies {
-    implementation(project(":$RELEASE_ARTIFACT"))
+    implementation(project(":$releaseArtifact"))
     implementation(libs.material)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.multidex)
