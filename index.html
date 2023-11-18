@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en-us">
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>pinview</title>
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <meta content="#159957" name="theme-color">
+        <link href="styles/main.css" rel="stylesheet">
+        <link href="styles/dark.css" rel="stylesheet">
+        <link href="styles/normalize.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-groovy.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+        <!--Primary meta tags-->
+        <meta content="pinview" name="title">
+        <meta content="Android customizable input view" name="description">
+    </head>
+    <body>
+        <section class="page-header">
+            <h1 class="project-name">pinview</h1>
+            <h2 class="project-tagline">Android customizable input view</h2>
+        </section>
+        <section class="main-content">
+            <p>
+                <a href="https://travis-ci.com/github/hendraanggrian/pinview/"><img alt="Travis CI" src="https://img.shields.io/travis/com/hendraanggrian/appcompat/pinview"></a>
+<a href="https://codecov.io/gh/hendraanggrian/pinview/"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/hendraanggrian/pinview"></a>
+<a href="https://repo1.maven.org/maven2/com/hendraanggrian/appcompat/pinview/"><img alt="Maven Central" src="https://img.shields.io/maven-central/v/com.hendraanggrian.appcompat/pinview"></a>
+<a href="https://s01.oss.sonatype.org/content/repositories/snapshots/com/hendraanggrian/appcompat/pinview/"><img alt="Nexus Snapshot" src="https://img.shields.io/nexus/s/com.hendraanggrian.appcompat/pinview?server=https%3A%2F%2Fs01.oss.sonatype.org"></a>
+<a href="https://developer.android.com/studio/releases/platforms/#4.0"><img alt="Android SDK" src="https://img.shields.io/badge/sdk-14%2B-informational"></a>
+            </p>
+
+            <h1>PinView</h1>
+
+            <p>Android customizable pin input view.</p>
+
+            <p>
+                <img alt="Preview." src="https://github.com/hendraanggrian/pinview/raw/assets/preview.png">
+            </p>
+
+            <h2>Download</h2>
+
+            <pre><code class="language-groovy">repositories {
+    google()
+    mavenCentral()
+}
+dependencies {
+    compile "com.hendraanggrian.appcompat:pinview:$version"
+}
+</code></pre>
+
+            <h2>Usage</h2>
+
+            <p>Declare view in xml layout.</p>
+
+            <pre><code class="language-xml">&lt;com.hendraanggrian.appcompat.widget.PinGroup
+  android:id="@+id/pinGroup"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:pinTextAppearance="@style/TextAppearance.AppCompat.Display2"
+  app:pinCount="6"/&gt;
+</code></pre>
+
+            <p>Then in java.</p>
+
+            <pre><code class="language-java">PinGroup view = findViewById&lt;&gt;(R.id.pinView);
+CharSequence pin = view.getText();
+
+// set listener
+view.setOnStateChangedListener(new PinGroup.OnStateChangedListener() {
+  @Override
+  public void onStateChanged(@NonNull PinGroup view, boolean isComplete) {
+    // do something
+  }
+});
+view.setOnPinChangedListener(new PinGroup.OnPinChangedListener() {
+  @Override
+  public void onStateChanged(@NonNull PinGroup view, @NonNull CharSequence pin) {
+    // do something
+  }
+});
+</code></pre>
+
+            <h3>Use custom pin</h3>
+
+            <p>
+                Make a class that extends <code>PinView</code>.
+            </p>
+
+            <pre><code class="language-java">package com.example;
+
+public class CustomPinView extends PinView {
+  public CustomPinView(Context context) {
+    super(context);
+    doSomething();
+  }
+}
+</code></pre>
+
+            <p>Then refer to that class in xml, there is no way to do change it
+programmatically.</p>
+
+            <pre><code class="language-xml">&lt;com.hendraanggrian.appcompat.widget.PinGroup
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  app:pinView="com.example.CustomPinView"/&gt;
+</code></pre>
+
+            <footer class="site-footer">
+                <span class="site-footer-owner"><a href="https://github.com/hendraanggrian/pinview/">pinview</a> is maintained by <a href="https://github.com/hendraanggrian/">Hendra Anggrian</a></span><span class="site-footer-credits">Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/jasonlong/cayman-theme/">jasonlong</a></span>
+            </footer>
+        </section>
+    </body>
+</html>
