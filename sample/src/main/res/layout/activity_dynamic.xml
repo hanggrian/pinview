@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".dynamic.DynamicActivity"
+  tools:ignore="HardcodedText">
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?colorPrimary"
+    android:fitsSystemWindows="true">
+
+    <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?actionBarSize"
+      android:theme="@style/ThemeOverlay.Material3.DynamicColors.Light"
+      app:title="Verify your ID"/>
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.cardview.widget.CardView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="32dp"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+          android:id="@+id/textView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Enter your pin"
+          android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+          android:textColor="?colorSecondary"/>
+
+        <com.hanggrian.pinview.PinView
+          android:id="@+id/pinView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          app:pinEditText="com.example.dynamic.PasswordEditText"/>
+      </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <FrameLayout
+      android:id="@+id/container"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"/>
+  </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

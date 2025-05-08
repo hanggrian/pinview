@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+  <style name="Theme.Static" parent="Theme.Material3.Dark.NoActionBar">
+    <item name="colorPrimary">#2c5ef6</item>
+    <item name="colorSecondary">#0522bc</item>
+  </style>
+</resources>

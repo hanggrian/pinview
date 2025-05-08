@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
   <style name="Widget.PinView" parent="android:Widget">
-    <item name="pinEditText">com.hendraanggrian.appcompat.pinview.widget.PinEditText</item>
+    <item name="pinEditText">com.hanggrian.pinview.PinEditText</item>
     <item name="pinGap">8dp</item>
 
     <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>

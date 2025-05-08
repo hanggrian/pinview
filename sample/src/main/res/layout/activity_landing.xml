@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/bg_gradient"
+  android:orientation="vertical"
+  android:padding="16dp"
+  tools:context=".static.LandingActivity"
+  tools:ignore="HardcodedText,ContentDescription">
+
+  <ImageView
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:layout_gravity="center"
+    android:layout_marginTop="48dp"
+    android:src="@drawable/logo"/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="8dp"
+    android:text="Secure Photo Vault"
+    android:textAppearance="@style/TextAppearance.Material3.TitleSmall"/>
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1">
+
+
+  </RelativeLayout>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Welcome"
+    android:textAppearance="@style/TextAppearance.Material3.DisplayMedium"/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:text="Secure Photo Vault is a trusted solution to keep all of your private pictures and videos hidden behind a passcode."
+    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+
+  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32dp"
+    android:text="Get Started"
+    android:textColor="?colorPrimary"
+    app:backgroundTint="@android:color/white"/>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="32dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Have an account?"
+      android:textAppearance="@style/TextAppearance.Material3.BodyMedium"/>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="4dp"
+      android:text="Login"
+      android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+      android:textStyle="bold"/>
+  </LinearLayout>
+</LinearLayout>

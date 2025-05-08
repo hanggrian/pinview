@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+
   <application
     android:name="androidx.multidex.MultiDexApplication"
     android:allowBackup="true"
     android:label="PinView Sample"
-    android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+    tools:ignore="MissingApplicationIcon">
     <activity
-      android:name=".MainActivity"
-      android:exported="true">
+      android:name=".dynamic.DynamicActivity"
+      android:exported="true"
+      android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar"/>
+
+    <!-- https://dribbble.com/shots/25029406-PhotoVault-iOS-Mobile-Design/ -->
+    <activity
+      android:name=".static.LandingActivity"
+      android:exported="true"
+      android:theme="@style/Theme.Static">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
+
         <category android:name="android.intent.category.LAUNCHER"/>
         <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
     </activity>
+    <activity
+      android:name=".static.PasscodeActivity"
+      android:exported="true"
+      android:theme="@style/Theme.Static"/>
   </application>
 </manifest>
