@@ -2,7 +2,70 @@
 <resources>
 
   <style name="Theme.Static" parent="Theme.Material3.Dark.NoActionBar">
-    <item name="colorPrimary">#2c5ef6</item>
-    <item name="colorSecondary">#0522bc</item>
+    <item name="colorPrimary">#8570ee</item>
+    <item name="colorSecondary">#8570ee</item>
+  </style>
+
+  <style name="Widget.Landing.Tile" parent="android:Widget">
+    <item name="cardCornerRadius">8dp</item>
+    <item name="cardElevation">2dp</item>
+  </style>
+
+  <style name="Widget.Landing.Tile.Square" parent="Widget.Landing.Tile">
+    <item name="android:layout_width">128dp</item>
+    <item name="android:layout_height">128dp</item>
+  </style>
+
+  <style name="Widget.Landing.Tile.Wide" parent="Widget.Landing.Tile">
+    <item name="android:layout_width">128dp</item>
+    <item name="android:layout_height">256dp</item>
+  </style>
+
+  <style name="Widget.Landing.TileImage" parent="Widget.Landing.Tile">
+    <item name="android:layout_width">64dp</item>
+    <item name="android:layout_height">64dp</item>
+    <item name="android:layout_gravity">center</item>
+  </style>
+
+  <style name="Widget.Splash.LinkContainer" parent="android:Widget">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginStart">32dp</item>
+    <item name="android:layout_marginEnd">32dp</item>
+    <item name="android:elevation">8dp</item>
+    <item name="cardCornerRadius">32dp</item>
+  </style>
+
+  <style name="Widget.Splash.LinkText" parent="android:Widget">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">center</item>
+    <item name="android:layout_marginStart">16dp</item>
+    <item name="android:layout_marginTop">16dp</item>
+    <item name="android:layout_marginBottom">16dp</item>
+    <item name="android:layout_weight">1</item>
+  </style>
+
+  <style name="Widget.Splash.ChevronContainer" parent="android:Widget">
+    <item name="android:layout_width">32dp</item>
+    <item name="android:layout_height">32dp</item>
+    <item name="android:layout_gravity">center</item>
+    <item name="android:layout_marginTop">16dp</item>
+    <item name="android:layout_marginEnd">16dp</item>
+    <item name="android:layout_marginBottom">16dp</item>
+  </style>
+
+  <style name="Widget.Splash.ChevronBackground" parent="android:Widget">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:src">#39a1c2</item>
+    <item name="riv_corner_radius">16dp</item>
+  </style>
+
+  <style name="Widget.Splash.Chevron" parent="android:Widget">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">center</item>
+    <item name="tint">@android:color/white</item>
   </style>
 </resources>

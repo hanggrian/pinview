@@ -1,4 +1,4 @@
-package com.example.dynamic
+package com.example
 
 import android.content.Context
 import android.os.Build.VERSION.SDK_INT

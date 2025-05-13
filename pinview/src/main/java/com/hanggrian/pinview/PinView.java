@@ -399,7 +399,7 @@ public class PinView extends LinearLayout {
          * Called when pin is changed.
          *
          * @param view the view which pin has changed.
-         * @param pin  changed pin in char sequence.
+         * @param pin changed pin in char sequence.
          */
         void onPinChanged(@NonNull PinView view, @NonNull CharSequence pin);
     }
@@ -408,7 +408,7 @@ public class PinView extends LinearLayout {
         /**
          * Called when state is changed.
          *
-         * @param view       the view which state has changed.
+         * @param view the view which state has changed.
          * @param isComplete true when pins are all filled.
          */
         void onStateChanged(@NonNull PinView view, boolean isComplete);

@@ -7,16 +7,11 @@
     android:allowBackup="true"
     android:label="PinView Sample"
     tools:ignore="MissingApplicationIcon">
+
     <activity
       android:name=".dynamic.DynamicActivity"
       android:exported="true"
-      android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar"/>
-
-    <!-- https://dribbble.com/shots/25029406-PhotoVault-iOS-Mobile-Design/ -->
-    <activity
-      android:name=".static.LandingActivity"
-      android:exported="true"
-      android:theme="@style/Theme.Static">
+      android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
@@ -24,9 +19,23 @@
         <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
     </activity>
+
+    <!-- https://dribbble.com/shots/25029406-PhotoVault-iOS-Mobile-Design/ -->
+    <!-- https://dribbble.com/shots/25997651-Saas-Landing-page-design/ -->
+    <!-- https://www.figma.com/community/file/1352533967417354878/ -->
+    <activity
+      android:name=".static.LandingActivity"
+      android:exported="true"
+      android:theme="@style/Theme.Static"/>
     <activity
       android:name=".static.PasscodeActivity"
       android:exported="true"
-      android:theme="@style/Theme.Static"/>
+      android:theme="@style/Theme.Static"
+      android:windowSoftInputMode="adjustResize"/>
+    <activity
+      android:name=".static.SplashActivity"
+      android:exported="true"
+      android:theme="@style/Theme.Static"
+      android:windowSoftInputMode="adjustResize"/>
   </application>
 </manifest>

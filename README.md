@@ -1,14 +1,20 @@
-[![Travis CI](https://img.shields.io/travis/com/hendraanggrian/appcompat/pinview)](https://travis-ci.com/github/hendraanggrian/pinview/)
-[![Codecov](https://img.shields.io/codecov/c/github/hendraanggrian/pinview)](https://codecov.io/gh/hendraanggrian/pinview/)
-[![Maven Central](https://img.shields.io/maven-central/v/com.hendraanggrian.appcompat/pinview)](https://repo1.maven.org/maven2/com/hendraanggrian/appcompat/pinview/)
-[![Nexus Snapshot](https://img.shields.io/nexus/s/com.hendraanggrian.appcompat/pinview?server=https%3A%2F%2Fs01.oss.sonatype.org)](https://s01.oss.sonatype.org/content/repositories/snapshots/com/hendraanggrian/appcompat/pinview/)
-[![Android SDK](https://img.shields.io/badge/sdk-14%2B-informational)](https://developer.android.com/studio/releases/platforms/#4.0)
+[![CircleCI](https://img.shields.io/circleci/build/gh/hanggrian/pinview)](https://app.circleci.com/pipelines/github/hanggrian/pinview/)
+[![Codecov](https://img.shields.io/codecov/c/gh/hanggrian/pinview)](https://app.codecov.io/gh/hanggrian/pinview/)
+[![Maven Central](https://img.shields.io/maven-central/v/com.hanggrian/pinview)](https://central.sonatype.com/artifact/com.hanggrian/pinview/)
+[![Android SDK](https://img.shields.io/badge/sdk-21%2B-informational)](https://developer.android.com/studio/releases/platforms/#5.0) \
+[![Figma](https://img.shields.io/badge/design-figma-f24e1e)](https://www.figma.com/community/file/1502826401449912665/)
+[![Layers](https://img.shields.io/badge/showcase-layers-000)](https://layers.to/layers/cmamk4jbf000gl70cqz0z2uc2/)
+[![Pinterest](https://img.shields.io/badge/pin-pinterest-bd081c)](https://www.pinterest.com/pin/1107322627133856191/)
 
 # PinView
 
-Android customizable pin input view.
+![](https://github.com/hendraanggrian/pinview/raw/assets/preview_shown.png "Digits-shown preview")
+![](https://github.com/hendraanggrian/pinview/raw/assets/preview_hidden.png "Digits-hidden preview")
 
-![Preview.](https://github.com/hendraanggrian/pinview/raw/assets/preview.png)
+Customizable pin input field with a jumping cursor.
+
+- Inflate custom `EditText` from XML.
+- Tracks user input and state changes.
 
 ## Download
 
@@ -18,7 +24,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile "com.hendraanggrian.appcompat:pinview:$version"
+    compile "com.hanggrian:pinview:$version"
 }
 ```
 
@@ -27,7 +33,7 @@ dependencies {
 Declare view in xml layout.
 
 ```xml
-<com.hendraanggrian.appcompat.widget.PinGroup
+<com.hanggrian.pinview.PinGroup
   android:id="@+id/pinGroup"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -35,24 +41,17 @@ Declare view in xml layout.
   app:pinCount="6"/>
 ```
 
-Then in java.
+Then in Java.
 
 ```java
 PinGroup view = findViewById<>(R.id.pinView);
 CharSequence pin = view.getText();
 
-// set listener
-view.setOnStateChangedListener(new PinGroup.OnStateChangedListener() {
-  @Override
-  public void onStateChanged(@NonNull PinGroup view, boolean isComplete) {
-    // do something
-  }
+view.setOnStateChangedListener((view, isComplete) -> {
+    // ...
 });
-view.setOnPinChangedListener(new PinGroup.OnPinChangedListener() {
-  @Override
-  public void onStateChanged(@NonNull PinGroup view, @NonNull CharSequence pin) {
-    // do something
-  }
+view.setOnPinChangedListener((view, pin) -> {
+    // ...
 });
 ```
 
@@ -64,10 +63,10 @@ Make a class that extends `PinView`.
 package com.example;
 
 public class CustomPinView extends PinView {
-  public CustomPinView(Context context) {
-    super(context);
-    doSomething();
-  }
+    public CustomPinView(Context context) {
+        super(context);
+        doSomething();
+    }
 }
 ```
 
@@ -75,7 +74,7 @@ Then refer to that class in xml, there is no way to do change it
 programmatically.
 
 ```xml
-<com.hendraanggrian.appcompat.widget.PinGroup
+<com.hanggrian.pinview.PinGroup
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   app:pinView="com.example.CustomPinView"/>
