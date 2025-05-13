@@ -17,8 +17,8 @@
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="?actionBarSize"
-      android:theme="@style/ThemeOverlay.Material3.DynamicColors.Light"
-      app:title="Verify your ID"/>
+      app:title="Verify your ID"
+      app:titleTextColor="?colorOnPrimary"/>
   </com.google.android.material.appbar.AppBarLayout>
 
   <LinearLayout
@@ -52,7 +52,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="16dp"
-          app:pinEditText="com.example.dynamic.PasswordEditText"/>
+          app:pinEditText="com.example.PasswordEditText"/>
       </LinearLayout>
     </androidx.cardview.widget.CardView>
 

@@ -4,25 +4,119 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="#181c1f"
+  android:fitsSystemWindows="true"
   tools:context=".static.PasscodeActivity"
-  tools:ignore="HardcodedText">
+  tools:ignore="Overdraw,HardcodedText,ContentDescription">
 
   <com.google.android.material.appbar.AppBarLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fitsSystemWindows="true">
+    android:background="@android:color/transparent">
 
     <androidx.appcompat.widget.Toolbar
-      android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="?actionBarSize"
-      app:title="Arlen Bank &amp; Trust"
-      app:titleTextColor="?colorAccent"/>
+      app:navigationIcon="?homeAsUpIndicator"/>
   </com.google.android.material.appbar.AppBarLayout>
 
   <FrameLayout
-    android:id="@+id/container"
+    android:layout_width="400dp"
+    android:layout_height="400dp"
+    android:layout_marginStart="160dp"
+    android:layout_marginTop="-160dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:alpha="0.2"
+      android:rotation="180"
+      android:src="@drawable/bg_gradient_purple"
+      app:riv_corner_radius="200dp"/>
+
+    <com.makeramen.roundedimageview.RoundedImageView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_margin="60dp"
+      android:src="#181c1f"
+      app:riv_corner_radius="200dp"/>
+  </FrameLayout>
+
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="32dp"
+      android:text="Set a Pin"
+      android:textAppearance="@style/TextAppearance.Material3.DisplaySmall"
+      android:textColor="@android:color/white"/>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="16dp"
+      android:layout_marginEnd="32dp"
+      android:text="Your PIN is stored securely on-device only&#8212;we never sync sensitive data to protect your privacy."
+      android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+
+    <com.hanggrian.pinview.PinView
+      android:id="@+id/pinView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="32dp"
+      android:layout_marginEnd="32dp"
+      app:pinEditText="com.example.PasswordEditText"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="16dp"
+      android:layout_marginEnd="32dp"
+      android:orientation="horizontal">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Strength: "
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/fill_strength"
+        app:tint="#63c5af"/>
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Good"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+        android:textColor="#63c5af"/>
+    </LinearLayout>
+
+    <Space
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="32dp"
+      android:layout_marginTop="32dp"
+      android:text="Confirm Pin"
+      android:textColor="@android:color/white"
+      app:backgroundTint="?colorPrimary"/>
+  </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

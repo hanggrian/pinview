@@ -1,79 +1,314 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@drawable/bg_gradient"
-  android:orientation="vertical"
-  android:padding="16dp"
+  android:background="#181c1f"
   tools:context=".static.LandingActivity"
-  tools:ignore="HardcodedText,ContentDescription">
+  tools:ignore="Overdraw,HardcodedText,ContentDescription">
 
-  <ImageView
-    android:layout_width="48dp"
-    android:layout_height="48dp"
-    android:layout_gravity="center"
-    android:layout_marginTop="48dp"
-    android:src="@drawable/logo"/>
-
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginTop="8dp"
-    android:text="Secure Photo Vault"
-    android:textAppearance="@style/TextAppearance.Material3.TitleSmall"/>
-
-  <RelativeLayout
+  <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1">
+    android:layout_height="match_parent">
 
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
 
-  </RelativeLayout>
+      <FrameLayout
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_marginStart="-50dp"
+        android:layout_marginTop="120dp">
 
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Welcome"
-    android:textAppearance="@style/TextAppearance.Material3.DisplayMedium"/>
+        <com.makeramen.roundedimageview.RoundedImageView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:alpha="0.2"
+          android:rotation="180"
+          android:src="@drawable/bg_gradient_purple"
+          app:riv_corner_radius="240dp"/>
 
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="4dp"
-    android:text="Secure Photo Vault is a trusted solution to keep all of your private pictures and videos hidden behind a passcode."
-    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+        <com.makeramen.roundedimageview.RoundedImageView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_margin="60dp"
+          android:src="#181c1f"
+          app:riv_corner_radius="240dp"/>
+      </FrameLayout>
 
-  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="32dp"
-    android:text="Get Started"
-    android:textColor="?colorPrimary"
-    app:backgroundTint="@android:color/white"/>
+      <androidx.cardview.widget.CardView
+        android:id="@+id/tile1"
+        style="@style/Widget.Landing.Tile.Square"
+        android:layout_marginStart="-80dp"
+        android:layout_marginTop="180dp">
+
+        <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_gradient_teal"/>
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+        android:id="@+id/tile2"
+        style="@style/Widget.Landing.Tile.Wide"
+        android:layout_below="@id/tile1"
+        android:layout_alignStart="@id/tile1"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp">
+
+        <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_gradient_green"/>
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+        android:id="@+id/tile3"
+        style="@style/Widget.Landing.Tile.Square"
+        android:layout_alignTop="@id/tile1"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_toEndOf="@id/tile2">
+
+        <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_gradient_teal"/>
+
+          <ImageView
+            style="@style/Widget.Landing.TileImage"
+            android:src="@drawable/img_collection"/>
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+        android:id="@+id/tile4"
+        style="@style/Widget.Landing.Tile.Square"
+        android:layout_below="@id/tile3"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@id/tile1">
+
+        <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_gradient_teal"/>
+
+          <ImageView
+            style="@style/Widget.Landing.TileImage"
+            android:src="@drawable/img_document"/>
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+        android:id="@+id/tile5"
+        style="@style/Widget.Landing.Tile.Wide"
+        android:layout_alignTop="@id/tile1"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/tile4">
+
+        <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_gradient_green"/>
+
+          <ImageView
+            style="@style/Widget.Landing.TileImage"
+            android:src="@drawable/img_photo"/>
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+        android:id="@+id/tile6"
+        style="@style/Widget.Landing.Tile.Square"
+        android:layout_below="@id/tile5"
+        android:layout_alignStart="@id/tile5"
+        android:layout_marginTop="16dp">
+
+        <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_gradient_teal"/>
+
+          <ImageView
+            style="@style/Widget.Landing.TileImage"
+            android:src="@drawable/img_video"/>
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+        android:id="@+id/tile7"
+        style="@style/Widget.Landing.Tile.Square"
+        android:layout_alignBottom="@id/tile6"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="32dp"
+        android:layout_toEndOf="@id/tile6">
+
+        <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_gradient_teal"/>
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+        android:id="@+id/tile8"
+        style="@style/Widget.Landing.Tile.Square"
+        android:layout_above="@id/tile7"
+        android:layout_alignStart="@id/tile7"
+        android:layout_marginBottom="16dp">
+
+        <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_gradient_teal"/>
+        </FrameLayout>
+      </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+  </ScrollView>
 
   <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="32dp"
-    android:gravity="center"
-    android:orientation="horizontal">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="32dp">
+
+    <ImageView
+      android:layout_width="64dp"
+      android:layout_height="64dp"
+      android:layout_gravity="center"
+      android:layout_marginTop="32dp"
+      android:src="@drawable/logo"/>
 
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Have an account?"
-      android:textAppearance="@style/TextAppearance.Material3.BodyMedium"/>
+      android:layout_gravity="center"
+      android:layout_marginTop="8dp"
+      android:text="Secure Drive"
+      android:textAppearance="@style/TextAppearance.Material3.TitleSmall"/>
+
+    <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1">
+
+      <ImageView
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_gravity="center"
+        android:src="@drawable/fill_shield"
+        app:tint="#26ffffff"/>
+
+      <ImageView
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_gravity="center"
+        android:src="@drawable/fill_shield"
+        app:tint="#4dffffff"/>
+
+      <ImageView
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_gravity="center"
+        android:src="@drawable/fill_shield"
+        app:tint="@android:color/white"/>
+
+      <com.makeramen.roundedimageview.RoundedImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:src="?colorPrimary"
+        app:riv_corner_radius="32dp"/>
+
+      <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:src="@drawable/fill_lock"
+        app:tint="@android:color/white"/>
+    </FrameLayout>
 
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="4dp"
-      android:text="Login"
-      android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-      android:textStyle="bold"/>
+      android:text="Welcome"
+      android:textAppearance="@style/TextAppearance.Material3.DisplayMedium"
+      android:textColor="@android:color/white"/>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:text="Secure Drive is a trusted solution to keep all of your private pictures and videos hidden behind a passcode."
+      android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="32dp"
+      android:text="Get Started"
+      android:textColor="@android:color/white"
+      app:backgroundTint="?colorPrimary"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="32dp"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Have an account?"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"/>
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Login"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+        android:textColor="?colorPrimary"
+        android:textStyle="bold"/>
+    </LinearLayout>
   </LinearLayout>
-</LinearLayout>
+</FrameLayout>
